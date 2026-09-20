@@ -1,6 +1,3 @@
-parameters:
-  - $ref: '../../components/parameters/index.yaml#/DoctorId'
-
 get:
   tags:
     - Availabilities
@@ -10,6 +7,7 @@ get:
     Returns a paginated response of the doctor's availabilities, perPage is not
     required and it defaults to 25.
   parameters:
+    - $ref: '../../components/parameters/index.yaml#/DoctorId'
     - $ref: '../../components/parameters/index.yaml#/Page'
     - $ref: '../../components/parameters/index.yaml#/PerPage'
     - $ref: '../../components/parameters/index.yaml#/Include'
@@ -32,6 +30,8 @@ post:
     Creates a new availability for a doctor. The doctor must exist, the window
     must start in the future, must not overlap another availability of the same
     doctor, and its period must be divisible by the slot.
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/DoctorId'
   requestBody:
     required: true
     content:

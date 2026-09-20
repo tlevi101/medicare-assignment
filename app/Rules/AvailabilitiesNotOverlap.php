@@ -3,6 +3,7 @@
 namespace App\Rules;
 
 use App\Models\Doctor;
+use Carbon\Carbon;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Translation\PotentiallyTranslatedString;
@@ -21,8 +22,8 @@ class AvailabilitiesNotOverlap
             return;
         }
 
-        $startsAt = $validator->getData()['starts_at'];
-        $endsAt = $validator->getData()['ends_at'];
+        $startsAt = Carbon::parse($validator->getData()['starts_at']);
+        $endsAt = Carbon::parse($validator->getData()['ends_at']);
 
         $overlaps = $this->doctor->availabilities()
             ->where('starts_at', '<', $endsAt)

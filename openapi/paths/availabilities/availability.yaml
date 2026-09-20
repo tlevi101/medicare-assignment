@@ -1,13 +1,11 @@
-parameters:
-  - $ref: '../../components/parameters/index.yaml#/DoctorId'
-  - $ref: '../../components/parameters/index.yaml#/AvailabilityId'
-
 get:
   tags:
     - Availabilities
   summary: Show an availability
   operationId: showAvailability
   parameters:
+    - $ref: '../../components/parameters/index.yaml#/DoctorId'
+    - $ref: '../../components/parameters/index.yaml#/AvailabilityId'
     - $ref: '../../components/parameters/index.yaml#/Include'
   responses:
     '200':
@@ -27,6 +25,9 @@ put:
   description: |
     Updates all fields of an availability. Despite the method, it does the same
     as PATCH.
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/DoctorId'
+    - $ref: '../../components/parameters/index.yaml#/AvailabilityId'
   requestBody:
     required: true
     content:
@@ -55,6 +56,9 @@ patch:
 
     The overlap and divisibility rules read `starts_at`, `ends_at` and `slot`
     from the body, so send all three together.
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/DoctorId'
+    - $ref: '../../components/parameters/index.yaml#/AvailabilityId'
   requestBody:
     required: true
     content:
@@ -78,6 +82,9 @@ delete:
     - Availabilities
   summary: Delete an availability
   operationId: deleteAvailability
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/DoctorId'
+    - $ref: '../../components/parameters/index.yaml#/AvailabilityId'
   responses:
     '204':
       description: The availability was deleted. No body is returned.

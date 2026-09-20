@@ -1,11 +1,10 @@
-parameters:
-  - $ref: '../../components/parameters/index.yaml#/PatientId'
-
 get:
   tags:
     - Patients
   summary: Show a patient
   operationId: showPatient
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/PatientId'
   responses:
     '200':
       description: The patient.
@@ -22,6 +21,8 @@ put:
   summary: Update a patient
   operationId: updatePatient
   description: Updates all fields of a patient. Despite the method, it does the same as PATCH
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/PatientId'
   requestBody:
     required: true
     content:
@@ -46,6 +47,8 @@ patch:
   summary: Partially update a patient
   operationId: partiallyUpdatePatient
   description: Updates only the fields present in the body. Identical to `PUT`.
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/PatientId'
   requestBody:
     required: true
     content:
@@ -69,6 +72,8 @@ delete:
     - Patients
   summary: Delete a patient
   operationId: deletePatient
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/PatientId'
   responses:
     '204':
       description: The patient was deleted. No body is returned.

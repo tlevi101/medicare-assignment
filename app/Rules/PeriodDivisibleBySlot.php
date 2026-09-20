@@ -17,8 +17,8 @@ class PeriodDivisibleBySlot
             return;
         }
 
-        $startsAt = Carbon::create($validator->getData()['starts_at']);
-        $endsAt = Carbon::create($validator->getData()['ends_at']);
+        $startsAt = Carbon::parse($validator->getData()['starts_at']);
+        $endsAt = Carbon::parse($validator->getData()['ends_at']);
         $slot = $validator->getData()['slot'];
 
         $periodInMinutes = $startsAt->diffInMinutes($endsAt);

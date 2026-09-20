@@ -1,11 +1,10 @@
-parameters:
-  - $ref: '../../components/parameters/index.yaml#/DoctorId'
-
 get:
   tags:
     - Doctors
   summary: Show a doctor
   operationId: showDoctor
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/DoctorId'
   responses:
     '200':
       description: The doctor.
@@ -22,6 +21,8 @@ put:
   summary: Update a doctor
   operationId: updateDoctor
   description: Updates all fields of a doctor. Despite the method, it does the same as PATCH
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/DoctorId'
   requestBody:
     required: true
     content:
@@ -46,6 +47,8 @@ patch:
   summary: Partially update a doctor
   operationId: partiallyUpdateDoctor
   description: Updates only the fields present in the body. Identical to `PUT`.
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/DoctorId'
   requestBody:
     required: true
     content:
@@ -69,6 +72,8 @@ delete:
     - Doctors
   summary: Delete a doctor
   operationId: deleteDoctor
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/DoctorId'
   responses:
     '204':
       description: The doctor was deleted. No body is returned.
