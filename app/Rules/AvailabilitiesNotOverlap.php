@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use App\Models\Availability;
 use App\Models\Doctor;
 use Carbon\Carbon;
 use Closure;
@@ -13,8 +14,8 @@ class AvailabilitiesNotOverlap
 {
     private const MESSAGE = 'The availability overlaps with an existing availability.';
     public function __construct(
-        private Doctor $doctor,
-        private ?int $ignore = null
+        private readonly Doctor $doctor,
+        private readonly ?Availability $availability = null,
     ) { }
     public function __invoke(Validator $validator): void
     {
@@ -22,13 +23,13 @@ class AvailabilitiesNotOverlap
             return;
         }
 
-        $startsAt = Carbon::parse($validator->getData()['starts_at']);
-        $endsAt = Carbon::parse($validator->getData()['ends_at']);
+        $startsAt = Carbon::parse($validator->getData()['starts_at'] ?? $this->availability?->starts_at);
+        $endsAt = Carbon::parse($validator->getData()['ends_at']?? $this->availability?->ends_at);
 
         $overlaps = $this->doctor->availabilities()
             ->where('starts_at', '<', $endsAt)
             ->where('ends_at', '>', $startsAt)
-            ->when($this->ignore, fn ($q) => $q->whereKeyNot($this->ignore))
+            ->when($this->availability, fn ($q) => $q->whereKeyNot($this->availability->getKey()))
             ->exists();
 
         if ($overlaps) {

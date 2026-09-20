@@ -36,9 +36,9 @@ class UpdateAvailabilityRequest extends FormRequest
         return [
             new AvailabilitiesNotOverlap(
                 doctor: $this->route('doctor'),
-                ignore: $this->route('availability')?->id
+                availability: $this->route('availability')
             ),
-            new PeriodDivisibleBySlot(),
+            new PeriodDivisibleBySlot($this->route('availability')),
         ];
     }
 }
