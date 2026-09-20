@@ -35,3 +35,31 @@ DoctorId:
     type: integer
     format: int64
     minimum: 1
+
+AvailabilityId:
+  name: availability
+  in: path
+  required: true
+  description: ID of the availability.
+  schema:
+    type: integer
+    format: int64
+    minimum: 1
+
+Include:
+  name: include
+  in: query
+  required: false
+  description: |
+    Comma separated list of relationships to side-load. The named relationships
+    appear under `data.relationships` and the related resources under the
+    top-level `included` array.
+  schema:
+    type: string
+    enum:
+      - doctor
+  examples:
+    doctor:
+      value: doctor
+    nested:
+      value: doctor,doctor.nestedRelation

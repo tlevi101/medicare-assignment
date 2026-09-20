@@ -1,0 +1,23 @@
+title: AvailabilityCollectionResource
+type: object
+description: A paginated collection of availabilities, returned in a JSON:API format
+required:
+  - data
+  - links
+  - meta
+properties:
+  data:
+    type: array
+    items:
+      $ref: './Availability.yaml'
+  links:
+    $ref: './PaginationLinks.yaml'
+  meta:
+    $ref: './PaginationMeta.yaml'
+  included:
+    type: array
+    description: |
+      The related resources named in the `include` query parameter, deduplicated
+      across the page. Omitted when nothing was included.
+    items:
+      $ref: './Doctor.yaml'

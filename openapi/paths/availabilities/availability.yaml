@@ -1,0 +1,85 @@
+parameters:
+  - $ref: '../../components/parameters/index.yaml#/DoctorId'
+  - $ref: '../../components/parameters/index.yaml#/AvailabilityId'
+
+get:
+  tags:
+    - Availabilities
+  summary: Show an availability
+  operationId: showAvailability
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/Include'
+  responses:
+    '200':
+      description: The availability.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/AvailabilityResponse.yaml'
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'
+
+put:
+  tags:
+    - Availabilities
+  summary: Update an availability
+  operationId: updateAvailability
+  description: |
+    Updates all fields of an availability. Despite the method, it does the same
+    as PATCH.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/AvailabilityUpdate.yaml'
+  responses:
+    '200':
+      description: The updated availability.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/AvailabilityResponse.yaml'
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'
+    '422':
+      $ref: '../../components/responses/AvailabilityValidationFailed.yaml'
+
+patch:
+  tags:
+    - Availabilities
+  summary: Partially update an availability
+  operationId: partiallyUpdateAvailability
+  description: |
+    Updates only the fields present in the body. Identical to `PUT`.
+
+    The overlap and divisibility rules read `starts_at`, `ends_at` and `slot`
+    from the body, so send all three together.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/AvailabilityUpdate.yaml'
+  responses:
+    '200':
+      description: The updated availability.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/AvailabilityResponse.yaml'
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'
+    '422':
+      $ref: '../../components/responses/AvailabilityValidationFailed.yaml'
+
+delete:
+  tags:
+    - Availabilities
+  summary: Delete an availability
+  operationId: deleteAvailability
+  responses:
+    '204':
+      description: The availability was deleted. No body is returned.
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'

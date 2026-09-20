@@ -22,6 +22,8 @@ tags:
     description: Patient records.
   - name: Doctors
     description: Doctor records.
+  - name: Availabilities
+    description: Doctor availabilities.
 
 security: []
 
@@ -34,3 +36,9 @@ paths:
     $ref: './paths/doctors/index.yaml'
   /doctors/{doctor}:
     $ref: './paths/doctors/doctor.yaml'
+  /doctors/{doctor}/availabilities:
+    $ref: './paths/availabilities/index.yaml'
+  /doctors/{doctor}/availabilities/{availability}:
+    $ref: './paths/availabilities/availability.yaml'
+
+

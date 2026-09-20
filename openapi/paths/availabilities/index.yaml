@@ -1,0 +1,51 @@
+parameters:
+  - $ref: '../../components/parameters/index.yaml#/DoctorId'
+
+get:
+  tags:
+    - Availabilities
+  summary: List availabilities
+  operationId: listAvailabilities
+  description: |
+    Returns a paginated response of the doctor's availabilities, perPage is not
+    required and it defaults to 25.
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/Page'
+    - $ref: '../../components/parameters/index.yaml#/PerPage'
+    - $ref: '../../components/parameters/index.yaml#/Include'
+  responses:
+    '200':
+      description: A page of availabilities.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/AvailabilityCollectionResource.yaml'
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'
+
+post:
+  tags:
+    - Availabilities
+  summary: Create an availability
+  operationId: createAvailability
+  description: |
+    Creates a new availability for a doctor. The doctor must exist, the window
+    must start in the future, must not overlap another availability of the same
+    doctor, and its period must be divisible by the slot.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/AvailabilityCreate.yaml'
+  responses:
+    '201':
+      description: The availability was created.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/AvailabilityResponse.yaml'
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'
+    '422':
+      $ref: '../../components/responses/AvailabilityValidationFailed.yaml'

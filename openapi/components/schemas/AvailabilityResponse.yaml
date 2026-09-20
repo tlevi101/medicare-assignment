@@ -1,0 +1,14 @@
+title: AvailabilityResponse
+type: object
+required:
+  - data
+properties:
+  data:
+    $ref: './Availability.yaml'
+  included:
+    type: array
+    description: |
+      The related resources named in the `include` query parameter.
+      Omitted when nothing was included.
+    items:
+      $ref: './Doctor.yaml'

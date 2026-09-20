@@ -1,0 +1,49 @@
+description: The submitted body failed validation.
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/ValidationError.yaml'
+    examples:
+      missingFields:
+        summary: Required fields were omitted
+        value:
+          message: The starts at field is required. (and 2 more errors)
+          errors:
+            starts_at:
+              - The starts at field is required.
+            ends_at:
+              - The ends at field is required.
+            slot:
+              - The slot field is required.
+      startsInThePast:
+        summary: The window does not start in the future
+        value:
+          message: The starts at field must be a date after now.
+          errors:
+            starts_at:
+              - The starts at field must be a date after now.
+      slotTooShort:
+        summary: The slot is shorter than 30 minutes
+        value:
+          message: The slot field must be at least 30.
+          errors:
+            slot:
+              - The slot field must be at least 30.
+      overlapping:
+        summary: The window overlaps another availability of the same doctor
+        value:
+          message: The availability overlaps with an existing availability. (and 1 more error)
+          errors:
+            starts_at:
+              - The availability overlaps with an existing availability.
+            ends_at:
+              - The availability overlaps with an existing availability.
+      notDivisibleBySlot:
+        summary: The period is not divisible by the slot
+        value:
+          message: The period between starts_at and ends_at must be divisible by the slot. (and 1 more error)
+          errors:
+            starts_at:
+              - The period between starts_at and ends_at must be divisible by the slot.
+            ends_at:
+              - The period between starts_at and ends_at must be divisible by the slot.

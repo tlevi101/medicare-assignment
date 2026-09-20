@@ -1,0 +1,15 @@
+title: ResourceIdentifier
+type: object
+description: A JSON:API resource identifier, pointing at a resource in the top-level `included` array.
+required:
+  - id
+  - type
+properties:
+  id:
+    type: string
+    examples:
+      - '1'
+  type:
+    type: string
+    examples:
+      - doctors
