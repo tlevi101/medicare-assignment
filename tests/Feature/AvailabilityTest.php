@@ -23,21 +23,32 @@ test('availabilities index only lists the given doctor availabilities', function
         ->assertJsonCount(2, 'data');
 });
 
-test('availabilities show', function () {
-    $availability = \App\Models\Availability::factory()->create(['doctor_id' => $this->doctor->id]);
+describe('availabilities show', function (){
+    it('returns availability for the related doctor', function () {
+        $availability = \App\Models\Availability::factory()->create(['doctor_id' => $this->doctor->id]);
 
-    $response = $this->getJson("/api/doctors/{$this->doctor->id}/availabilities/{$availability->id}");
+        $response = $this->getJson("/api/doctors/{$this->doctor->id}/availabilities/{$availability->id}");
 
-    $response->assertStatus(200)
-        ->assertJson([
-            'data' => [
-                'id' => $availability->id,
-                'type' => 'availabilities',
-                'attributes' => [
-                    'slot' => $availability->slot,
+        $response->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    'id' => $availability->id,
+                    'type' => 'availabilities',
+                    'attributes' => [
+                        'slot' => $availability->slot,
+                    ],
                 ],
-            ],
-        ]);
+            ]);
+    });
+
+    it('fails when the availability does not belong to the doctor', function () {
+        $availability = \App\Models\Availability::factory()->create();
+
+        $response = $this->getJson("/api/doctors/{$this->doctor->id}/availabilities/{$availability->id}");
+
+        $response->assertStatus(404);
+    });
+
 });
 
 describe('availability store: ', function () {

@@ -25,11 +25,7 @@ class AvailabilityController extends Controller
      */
     public function store(StoreAvailabilityRequest $request, Doctor $doctor)
     {
-        $validated = $request->validated();
-        $availability = Availability::create([
-            'doctor_id' => $request->route('doctor')->id,
-            ...$validated
-        ]);
+        $availability = $doctor->availabilities()->create($request->validated());
 
         return $availability->toResource();
     }

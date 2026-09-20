@@ -5,9 +5,6 @@ namespace App\Rules;
 use App\Models\Availability;
 use App\Models\Doctor;
 use Carbon\Carbon;
-use Closure;
-use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Translation\PotentiallyTranslatedString;
 use Illuminate\Validation\Validator;
 
 class AvailabilitiesNotOverlap

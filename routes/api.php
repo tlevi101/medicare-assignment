@@ -18,4 +18,4 @@ Route::resource(
     'doctors.availabilities',
     \App\Http\Controllers\AvailabilityController::class,
     ['except' => ['create', 'edit']]
-);
+)->scoped();
