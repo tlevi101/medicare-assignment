@@ -1,0 +1,17 @@
+apis:
+  main:
+    root: openapi/openapi.yaml
+    output: public/docs/openapi.yaml
+
+extends:
+  - recommended
+
+rules:
+  operation-operationId: error
+  operation-summary: error
+  no-unused-components: error
+  security-defined: error
+  # Operational endpoints legitimately have no 4xx response.
+  operation-4xx-response: warn
+  # The only server is the local one until an environment is deployed.
+  no-server-example.com: off

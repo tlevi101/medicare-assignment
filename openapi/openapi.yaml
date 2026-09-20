@@ -1,0 +1,31 @@
+openapi: 3.1.0
+
+info:
+  title: Medicare API
+  version: 0.1.0
+  summary: HTTP API for the Medicare application.
+  description: |
+    All endpoints are served under the `/api` prefix and speak JSON.
+
+    Requests must send `Accept: application/json`; without it Laravel falls back
+    to HTML error pages instead of the JSON error bodies documented here.
+  license:
+    name: MIT
+    identifier: MIT
+
+servers:
+  - url: http://localhost:8000/api
+    description: Local development
+
+tags:
+  - name: System
+    description: Operational endpoints that are not part of the business domain.
+  - name: Users
+    description: User records.
+
+security:
+  - bearerAuth: []
+
+paths:
+
+components:
