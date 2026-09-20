@@ -1,0 +1,23 @@
+title: PatientUpdate
+type: object
+description: |
+  The body accepted when updating a patient. Every field is optional and only
+  the fields present are written, so `PUT` behaves the same as `PATCH` here.
+properties:
+  name:
+    type: string
+    maxLength: 255
+    examples:
+      - Jane Doe
+  email:
+    type: string
+    format: email
+    maxLength: 255
+    description: Must not already belong to another patient.
+    examples:
+      - jane.doe@example.com
+  phone:
+    type: string
+    maxLength: 255
+    examples:
+      - '1234567890'

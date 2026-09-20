@@ -1,0 +1,8 @@
+title: PatientResponse
+type: object
+description: A JSON:API document holding a single patient.
+required:
+  - data
+properties:
+  data:
+    $ref: './Patient.yaml'

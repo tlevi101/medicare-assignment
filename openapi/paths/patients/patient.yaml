@@ -1,0 +1,76 @@
+parameters:
+  - $ref: '../../components/parameters/index.yaml#/PatientId'
+
+get:
+  tags:
+    - Patients
+  summary: Show a patient
+  operationId: showPatient
+  responses:
+    '200':
+      description: The patient.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/PatientResponse.yaml'
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'
+
+put:
+  tags:
+    - Patients
+  summary: Update a patient
+  operationId: updatePatient
+  description: Updates all fields of a patient. Despite the method, it does the same as PATCH
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/PatientUpdate.yaml'
+  responses:
+    '200':
+      description: The updated patient.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/PatientResponse.yaml'
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'
+    '422':
+      $ref: '../../components/responses/ValidationFailed.yaml'
+
+patch:
+  tags:
+    - Patients
+  summary: Partially update a patient
+  operationId: partiallyUpdatePatient
+  description: Updates only the fields present in the body. Identical to `PUT`.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/PatientUpdate.yaml'
+  responses:
+    '200':
+      description: The updated patient.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/PatientResponse.yaml'
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'
+    '422':
+      $ref: '../../components/responses/ValidationFailed.yaml'
+
+delete:
+  tags:
+    - Patients
+  summary: Delete a patient
+  operationId: deletePatient
+  responses:
+    '204':
+      description: The patient was deleted. No body is returned.
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'

@@ -1,0 +1,39 @@
+title: Doctor
+type: object
+required:
+  - id
+  - type
+  - attributes
+properties:
+  id:
+    type: string
+    description: The doctor's ID
+  type:
+    type: string
+    enum:
+      - doctors
+  attributes:
+    type: object
+    required:
+      - name
+      - email
+      - expertise
+    properties:
+      name:
+        type: string
+        maxLength: 255
+        examples:
+          - Dr. Jane Roe
+      email:
+        type: string
+        format: email
+        maxLength: 255
+        description: Unique email address for the doctor
+        examples:
+          - jane.roe@example.com
+      expertise:
+        type: string
+        maxLength: 255
+        description: "Free-text: field of expertise"
+        examples:
+          - Cardiology

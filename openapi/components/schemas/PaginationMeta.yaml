@@ -1,0 +1,60 @@
+title: PaginationMeta
+type: object
+description: Metadata of the current paginated collection, returned in a JSON:API format
+required:
+  - current_page
+  - from
+  - last_page
+  - links
+  - path
+  - per_page
+  - to
+  - total
+properties:
+  current_page:
+    type: integer
+    minimum: 1
+    examples:
+      - 1
+  from:
+    type:
+      - integer
+      - 'null'
+    description: Index of the first record on this page; null when the page is empty.
+    examples:
+      - 1
+  last_page:
+    type: integer
+    minimum: 1
+    examples:
+      - 2
+  links:
+    type: array
+    description: |
+      Ready-made pager entries, including the leading "Previous" and trailing
+      "Next" pseudo-links. Labels contain HTML entities (`&laquo;`, `&raquo;`).
+    items:
+      $ref: './PaginationMetaLink.yaml'
+  path:
+    type: string
+    format: uri
+    description: Base URL of the listing, without the query string.
+    examples:
+      - http://localhost:8000/api/patients
+  per_page:
+    type: integer
+    minimum: 1
+    examples:
+      - 25
+  to:
+    type:
+      - integer
+      - 'null'
+    description: Index of the last record on this page; null when the page is empty.
+    examples:
+      - 25
+  total:
+    type: integer
+    minimum: 0
+    examples:
+      - 3

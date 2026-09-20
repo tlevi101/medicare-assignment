@@ -1,0 +1,35 @@
+title: PaginationLinks
+type: object
+description: A set of links for paginated responses, returned in a JSON:API format
+required:
+  - first
+  - last
+  - prev
+  - next
+properties:
+  first:
+    type:
+      - string
+      - 'null'
+    format: uri
+    examples:
+      - http://localhost:8000/api/patients?page=1
+  last:
+    type:
+      - string
+      - 'null'
+    format: uri
+    examples:
+      - http://localhost:8000/api/patients?page=2
+  prev:
+    type:
+      - string
+      - 'null'
+    format: uri
+    description: Null on the first page.
+  next:
+    type:
+      - string
+      - 'null'
+    format: uri
+    description: Null on the last page.

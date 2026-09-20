@@ -1,0 +1,42 @@
+title: Patient
+type: object
+description: A patient rendered as a JSON:API resource object.
+required:
+  - id
+  - type
+  - attributes
+properties:
+  id:
+    type: string
+    description: Patient's ID
+    examples:
+      - '1'
+  type:
+    type: string
+    enum:
+      - patients
+  attributes:
+    type: object
+    required:
+      - name
+      - email
+      - phone
+    properties:
+      name:
+        type: string
+        maxLength: 255
+        examples:
+          - John Doe
+      email:
+        type: string
+        format: email
+        maxLength: 255
+        description: Unique across all patients.
+        examples:
+          - john.doe@example.com
+      phone:
+        type: string
+        maxLength: 255
+        description: No format is enforced.
+        examples:
+          - '+1 (470) 231-0663'

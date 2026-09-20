@@ -1,0 +1,37 @@
+Page:
+  name: page
+  in: query
+  required: false
+  schema:
+    type: integer
+    minimum: 1
+    default: 1
+
+PerPage:
+  name: perPage
+  in: query
+  required: false
+  schema:
+    type: integer
+    minimum: 1
+    default: 25
+
+PatientId:
+  name: patient
+  in: path
+  required: true
+  description: ID of the patient.
+  schema:
+    type: integer
+    format: int64
+    minimum: 1
+
+DoctorId:
+  name: doctor
+  in: path
+  required: true
+  description: ID of the doctor.
+  schema:
+    type: integer
+    format: int64
+    minimum: 1

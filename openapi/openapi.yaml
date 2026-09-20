@@ -14,18 +14,23 @@ info:
     identifier: MIT
 
 servers:
-  - url: http://localhost:8000/api
+  - url: http://localhost/api
     description: Local development
 
 tags:
-  - name: System
-    description: Operational endpoints that are not part of the business domain.
-  - name: Users
-    description: User records.
+  - name: Patients
+    description: Patient records.
+  - name: Doctors
+    description: Doctor records.
 
-security:
-  - bearerAuth: []
+security: []
 
 paths:
-
-components:
+  /patients:
+    $ref: './paths/patients/index.yaml'
+  /patients/{patient}:
+    $ref: './paths/patients/patient.yaml'
+  /doctors:
+    $ref: './paths/doctors/index.yaml'
+  /doctors/{doctor}:
+    $ref: './paths/doctors/doctor.yaml'

@@ -1,0 +1,11 @@
+description: |
+  No record matches the identifier in the path. Route model binding aborts
+  before the controller action runs.
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/Error.yaml'
+    examples:
+      notFound:
+        value:
+          message: 'No query results for model [App\Models\Patient] 999999'

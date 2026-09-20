@@ -1,0 +1,16 @@
+title: DoctorCollectionResponse
+type: object
+description: A paginated collection of doctors, returned in a JSON:API format
+required:
+  - data
+  - links
+  - meta
+properties:
+  data:
+    type: array
+    items:
+      $ref: './Doctor.yaml'
+  links:
+    $ref: './PaginationLinks.yaml'
+  meta:
+    $ref: './PaginationMeta.yaml'

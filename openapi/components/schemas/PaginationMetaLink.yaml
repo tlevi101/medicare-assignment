@@ -1,0 +1,27 @@
+title: PaginationMetaLink
+type: object
+description: A single entry of the rendered pager.
+required:
+  - url
+  - label
+  - page
+  - active
+properties:
+  url:
+    type:
+      - string
+      - 'null'
+    format: uri
+    description: Null for the disabled "Previous"/"Next" entries.
+  label:
+    type: string
+    examples:
+      - '1'
+  page:
+    type:
+      - integer
+      - 'null'
+    description: Page number the entry points at; null when the entry is disabled.
+  active:
+    type: boolean
+    description: True for the page currently being viewed.

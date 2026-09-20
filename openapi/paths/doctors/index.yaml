@@ -1,0 +1,38 @@
+get:
+  tags:
+    - Doctors
+  summary: List doctors
+  operationId: listDoctors
+  description: Returns a paginated response of doctors, perPage is not required and it defaults to 25.
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/Page'
+    - $ref: '../../components/parameters/index.yaml#/PerPage'
+  responses:
+    '200':
+      description: A page of doctors.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/DoctorCollectionResponse.yaml'
+
+post:
+  tags:
+    - Doctors
+  summary: Create a doctor
+  operationId: createDoctor
+  description: Creates a new doctor. The email must be unique
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/DoctorCreate.yaml'
+  responses:
+    '201':
+      description: The doctor was created.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/DoctorResponse.yaml'
+    '422':
+      $ref: '../../components/responses/ValidationFailed.yaml'

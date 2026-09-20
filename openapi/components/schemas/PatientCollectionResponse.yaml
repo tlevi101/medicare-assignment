@@ -1,0 +1,16 @@
+title: PatientCollectionResponse
+type: object
+description: A paginated collection of patients, returned in a JSON:API format
+required:
+  - data
+  - links
+  - meta
+properties:
+  data:
+    type: array
+    items:
+      $ref: './Patient.yaml'
+  links:
+    $ref: './PaginationLinks.yaml'
+  meta:
+    $ref: './PaginationMeta.yaml'

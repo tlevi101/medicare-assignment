@@ -1,0 +1,76 @@
+parameters:
+  - $ref: '../../components/parameters/index.yaml#/DoctorId'
+
+get:
+  tags:
+    - Doctors
+  summary: Show a doctor
+  operationId: showDoctor
+  responses:
+    '200':
+      description: The doctor.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/DoctorResponse.yaml'
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'
+
+put:
+  tags:
+    - Doctors
+  summary: Update a doctor
+  operationId: updateDoctor
+  description: Updates all fields of a doctor. Despite the method, it does the same as PATCH
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/DoctorUpdate.yaml'
+  responses:
+    '200':
+      description: The updated doctor.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/DoctorResponse.yaml'
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'
+    '422':
+      $ref: '../../components/responses/ValidationFailed.yaml'
+
+patch:
+  tags:
+    - Doctors
+  summary: Partially update a doctor
+  operationId: partiallyUpdateDoctor
+  description: Updates only the fields present in the body. Identical to `PUT`.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/DoctorUpdate.yaml'
+  responses:
+    '200':
+      description: The updated doctor.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/DoctorResponse.yaml'
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'
+    '422':
+      $ref: '../../components/responses/ValidationFailed.yaml'
+
+delete:
+  tags:
+    - Doctors
+  summary: Delete a doctor
+  operationId: deleteDoctor
+  responses:
+    '204':
+      description: The doctor was deleted. No body is returned.
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'

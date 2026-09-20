@@ -1,0 +1,21 @@
+title: DoctorUpdate
+type: object
+description: Request body accepted by doctors#update. All fields are optional.
+properties:
+  name:
+    type: string
+    maxLength: 255
+    examples:
+      - Dr. Jane Roe
+  email:
+    type: string
+    format: email
+    maxLength: 255
+    description: Must not already belong to another doctor.
+    examples:
+      - jane.roe@example.com
+  expertise:
+    type: string
+    maxLength: 255
+    examples:
+      - Neurology

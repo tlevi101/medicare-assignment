@@ -1,0 +1,24 @@
+title: ValidationError
+type: object
+description: The body returned when form request validation fails.
+required:
+  - message
+  - errors
+properties:
+  message:
+    type: string
+    description: The first validation message, suffixed with the remaining count.
+    examples:
+      - The name field is required. (and 2 more errors)
+  errors:
+    type: object
+    description: One entry per rejected field, keyed by the field name.
+    additionalProperties:
+      type: array
+      items:
+        type: string
+    examples:
+      - name:
+          - The name field is required.
+        email:
+          - The email field is required.

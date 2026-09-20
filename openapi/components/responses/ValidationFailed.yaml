@@ -1,0 +1,22 @@
+description: The submitted body failed validation.
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/ValidationError.yaml'
+    examples:
+      missingFields:
+        summary: Required fields were omitted
+        value:
+          message: The name field is required. (and 2 more errors)
+          errors:
+            name:
+              - The name field is required.
+            email:
+              - The email field is required.
+      duplicateEmail:
+        summary: The email is already taken
+        value:
+          message: The email has already been taken.
+          errors:
+            email:
+              - The email has already been taken.

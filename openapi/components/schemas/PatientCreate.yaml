@@ -1,0 +1,25 @@
+title: PatientCreate
+type: object
+description: Request body for creating a new patient, returned in a JSON:API format
+required:
+  - name
+  - email
+  - phone
+properties:
+  name:
+    type: string
+    maxLength: 255
+    examples:
+      - John Doe
+  email:
+    type: string
+    format: email
+    maxLength: 255
+    description: Must not already belong to another patient.
+    examples:
+      - john.doe@example.com
+  phone:
+    type: string
+    maxLength: 255
+    examples:
+      - '1234567890'

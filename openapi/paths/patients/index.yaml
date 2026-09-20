@@ -1,0 +1,38 @@
+get:
+  tags:
+    - Patients
+  summary: List patients
+  operationId: listPatients
+  description: Returns a paginated response of patients, perPage is not required and it defaults to 25.
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/Page'
+    - $ref: '../../components/parameters/index.yaml#/PerPage'
+  responses:
+    '200':
+      description: A page of patients.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/PatientCollectionResponse.yaml'
+
+post:
+  tags:
+    - Patients
+  summary: Create a patient
+  operationId: createPatient
+  description: Create a new patient, email must be unique
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/PatientCreate.yaml'
+  responses:
+    '201':
+      description: The patient was created.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/PatientResponse.yaml'
+    '422':
+      $ref: '../../components/responses/ValidationFailed.yaml'

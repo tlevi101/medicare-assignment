@@ -5,7 +5,8 @@ The main entry point is `openapi.yaml`, which references the other files.
 
 ```
 openapi.yaml              entry point: info, servers, tags, security, path refs
-paths/                    one file per path, named after the URL
+paths/<resource>/         one file per path: index.yaml for the collection,
+                          <singular>.yaml for the item path
 components/schemas/       request and response models
 components/responses/     reusable error responses
 components/parameters/    reusable query and path parameters
