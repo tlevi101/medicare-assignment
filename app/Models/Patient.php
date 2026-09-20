@@ -14,5 +14,6 @@ use Illuminate\Database\Eloquent\Model;
 #[UseFactory(PatientFactory::class)]
 class Patient extends Model
 {
+    /** @use HasFactory<PatientFactory> */
     use HasFactory;
 }

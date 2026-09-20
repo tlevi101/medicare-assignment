@@ -33,7 +33,8 @@ class DoctorController extends Controller
      */
     public function show(Doctor $doctor)
     {
-        return $doctor->toResource();
+        return $doctor->toResource()
+            ->ignoreFieldsAndIncludesInQueryString();
     }
 
     /**
@@ -43,7 +44,8 @@ class DoctorController extends Controller
     {
         $doctor->update($request->validated());
 
-        return $doctor->toResource();
+        return $doctor->toResource()
+            ->ignoreFieldsAndIncludesInQueryString();
     }
 
     /**
