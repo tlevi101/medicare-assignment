@@ -25,7 +25,7 @@ class StoreDoctorRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email:rfc', 'max:255', 'unique:doctors'],
-            'expertise' => ['required', 'string', 'max:255']
+            'expertise' => ['required', 'string', 'max:255'],
         ];
     }
 }

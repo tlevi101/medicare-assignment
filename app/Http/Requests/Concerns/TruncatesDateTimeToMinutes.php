@@ -10,11 +10,8 @@ use Illuminate\Support\Carbon;
  */
 trait TruncatesDateTimeToMinutes
 {
-
     /**
      * Try to parse string to carbon, get the start of minute and then return an iso8601 string
-     * @param ?string $dateTime
-     * @return ?string
      */
     protected function truncatesDateTimeToMinutes(?string $dateTime): ?string
     {
@@ -24,8 +21,7 @@ trait TruncatesDateTimeToMinutes
 
         try {
             return Carbon::parse($dateTime)->startOfMinute()->toIso8601String();
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return $dateTime;
         }
     }

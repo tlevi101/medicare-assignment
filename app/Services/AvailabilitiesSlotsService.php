@@ -42,6 +42,7 @@ class AvailabilitiesSlotsService
 
     /**
      * Get the collapsed slots for each availabilites
+     *
      * @param  Collection<int, Availability>  $availabilities
      * @return SupportCollection<int, array{doctor_id: int, starts_at: Carbon, ends_at: Carbon}>
      */
@@ -54,9 +55,10 @@ class AvailabilitiesSlotsService
 
     /**
      * Return all appointments for availabilities
+     *
      * @param  array<int, int>  $doctorIds
-     * @param \DateTime $startsAt Min startsAt time of the availabilities
-     * @param \DateTime $endsAt Max $endsAt time of the availabilities
+     * @param  \DateTime  $startsAt  Min startsAt time of the availabilities
+     * @param  \DateTime  $endsAt  Max $endsAt time of the availabilities
      * @return Collection<int, Appointment>
      */
     protected function getReservedSlots(array $doctorIds, \DateTime $startsAt, \DateTime $endsAt): Collection

@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use App\Enums\AppointmentStatus;
-use DateTimeInterface;
 use App\Observers\AppointmentObserver;
+use Database\Factories\AppointmentFactory;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\Scope;
@@ -13,7 +14,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
 
 /**
  * @method static Builder<static> active() Appointment is considered active if its status is not AppointmentStatus::Cancelled
@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[ObservedBy(AppointmentObserver::class)]
 class Appointment extends Model
 {
-    /** @use HasFactory<\Database\Factories\AppointmentFactory> */
+    /** @use HasFactory<AppointmentFactory> */
     use HasFactory;
 
     public function casts(): array
@@ -78,14 +78,10 @@ class Appointment extends Model
 
     /**
      * Appointment considered to be active if status != AppointmentStatus::Cancelled
-     * @param Builder $query
-     * @return void
      */
     #[Scope]
     protected function active(Builder $query): void
     {
         $query->where('status', '!=', AppointmentStatus::Cancelled);
     }
-
-
 }

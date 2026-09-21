@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Requests\Concerns\TruncatesDateTimeToMinutes;
 use App\Rules\AppointmentWithinAvailability;
 use Illuminate\Contracts\Validation\ValidationRule;
-use App\Http\Requests\Concerns\TruncatesDateTimeToMinutes;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreAppointmentRequest extends FormRequest
@@ -45,7 +45,7 @@ class StoreAppointmentRequest extends FormRequest
     public function after(): array
     {
         return [
-            new AppointmentWithinAvailability(),
+            new AppointmentWithinAvailability,
         ];
     }
 }

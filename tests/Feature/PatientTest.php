@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\Patient;
+
 test('patients index', function () {
-    \App\Models\Patient::factory()->count(3)->create();
+    Patient::factory()->count(3)->create();
 
     $response = $this->getJson('/api/patients');
 
@@ -10,7 +12,7 @@ test('patients index', function () {
 });
 
 test('patients show', function () {
-    $patient = \App\Models\Patient::factory()->create();
+    $patient = Patient::factory()->create();
 
     $response = $this->getJson("/api/patients/{$patient->id}");
 
@@ -23,7 +25,7 @@ test('patients show', function () {
                     'name' => $patient->name,
                     'email' => $patient->email,
                     'phone' => $patient->phone,
-                ]
+                ],
             ],
         ]);
 });
@@ -66,7 +68,7 @@ describe('patient store:', function () {
     });
 
     it('fails when email is not unique', function () {
-        $existingPatient = \App\Models\Patient::factory()->create();
+        $existingPatient = Patient::factory()->create();
 
         $response = $this->postJson('/api/patients', [
             'name' => 'John Doe',
@@ -89,10 +91,10 @@ describe('patient store:', function () {
             ->assertJsonValidationErrors(['email']);
     });
 
-    it('rejects too long strings', function() {
+    it('rejects too long strings', function () {
         $response = $this->postJson('/api/patients', [
             'name' => str_repeat('a', 256),
-            'email' => str_repeat('a', 256) . '@example.com',
+            'email' => str_repeat('a', 256).'@example.com',
             'phone' => str_repeat('1', 256),
         ]);
 
@@ -103,13 +105,13 @@ describe('patient store:', function () {
 
 describe('patient update:', function () {
     beforeEach(function () {
-        $this->patient = \App\Models\Patient::factory()->create();
+        $this->patient = Patient::factory()->create();
     });
     it('updates a patient', function () {
         $updatedData = [
             'name' => 'Jane Doe',
             'email' => 'test@example.com',
-            'phone' => '1234567890'
+            'phone' => '1234567890',
         ];
 
         $response = $this->putJson("/api/patients/{$this->patient->id}", $updatedData);
@@ -123,7 +125,7 @@ describe('patient update:', function () {
                 ],
             ]);
     });
-    it('partially updates a patient', function() {
+    it('partially updates a patient', function () {
         $updatedData = [
             'name' => 'Jane Doe',
         ];
@@ -140,7 +142,7 @@ describe('patient update:', function () {
             ]);
     });
     it('rejects invalid email', function () {
-        $patient = \App\Models\Patient::factory()->create();
+        $patient = Patient::factory()->create();
 
         $response = $this->putJson("/api/patients/{$patient->id}", [
             'email' => 'invalid-email',
@@ -151,8 +153,8 @@ describe('patient update:', function () {
     });
 
     it('requires unique email', function () {
-        $existingPatient = \App\Models\Patient::factory()->create();
-        $patientToUpdate = \App\Models\Patient::factory()->create();
+        $existingPatient = Patient::factory()->create();
+        $patientToUpdate = Patient::factory()->create();
 
         $response = $this->putJson("/api/patients/{$patientToUpdate->id}", [
             'email' => $existingPatient->email,
@@ -164,11 +166,9 @@ describe('patient update:', function () {
 });
 
 test('patient delete', function () {
-    $patient = \App\Models\Patient::factory()->create();
+    $patient = Patient::factory()->create();
 
     $response = $this->deleteJson("/api/patients/{$patient->id}");
 
     $response->assertStatus(204);
 });
-
-

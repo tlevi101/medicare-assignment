@@ -6,6 +6,7 @@ use App\Enums\AppointmentStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 #[Fillable('appointment_id', 'previous', 'new')]
 class AppointmentStatusActivity extends Model
 {
@@ -21,7 +22,7 @@ class AppointmentStatusActivity extends Model
     {
         return [
             'previous' => AppointmentStatus::class,
-            'new' => AppointmentStatus::class
+            'new' => AppointmentStatus::class,
         ];
     }
 }

@@ -8,6 +8,7 @@ use App\Models\Patient;
 
 /**
  * Builds a payload for booking an appointment based on the given availability.
+ *
  * @param  int  $offsetInMinutes  Distance of the requested slot from the start of the availability.
  * @param  int|null  $lengthInMinutes  Defaults to the availability's slot.
  * @return array{doctor_id: int, starts_at: string, ends_at: string}

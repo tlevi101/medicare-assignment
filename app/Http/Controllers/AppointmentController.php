@@ -6,10 +6,8 @@ use App\Enums\AppointmentStatus;
 use App\Http\Requests\AppointmentStatus\AppointmentCancelRequest;
 use App\Http\Requests\AppointmentStatus\AppointmentCompleteRequest;
 use App\Http\Requests\AppointmentStatus\AppointmentConfirmRequest;
-use App\Http\Requests\AppointmentStatus\AppointmentTransitionRequest;
 use App\Http\Requests\IndexAppointmentRequest;
 use App\Http\Requests\StoreAppointmentRequest;
-use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 use App\Models\Patient;
 use App\Services\ReserveAppointmentService;
@@ -34,8 +32,8 @@ class AppointmentController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(
-        Patient                   $patient,
-        StoreAppointmentRequest   $request,
+        Patient $patient,
+        StoreAppointmentRequest $request,
         ReserveAppointmentService $booker,
     ) {
         return $booker->reserve($patient, $request->validated())->toResource();
@@ -48,7 +46,6 @@ class AppointmentController extends Controller
     {
         return $appointment->toResource();
     }
-
 
     public function cancel(AppointmentCancelRequest $request, Patient $patient, Appointment $appointment)
     {

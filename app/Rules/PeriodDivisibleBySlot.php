@@ -8,18 +8,17 @@ use Illuminate\Validation\Validator;
 
 /**
  * Checks if the period between starts_at and ends_at is divisible by the slot.
+ *
  * @note This rule was not part of the task, if it was a real task I would have asked the client/PM if we need this or round the ends_at to the nearest slot.
  */
 class PeriodDivisibleBySlot
 {
     public function __construct(
         private readonly ?Availability $availability = null,
-    )
-    {
+    ) {}
 
-    }
+    private const MESSAGE = 'The period between starts_at and ends_at must be divisible by the slot.';
 
-    private const MESSAGE = "The period between starts_at and ends_at must be divisible by the slot.";
     public function __invoke(Validator $validator): void
     {
         if ($validator->errors()->hasAny(['starts_at', 'ends_at', 'slot'])) {

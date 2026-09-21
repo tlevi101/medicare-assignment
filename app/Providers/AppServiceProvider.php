@@ -13,8 +13,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(AvailabilitiesSlotsService::class, fn () => new AvailabilitiesSlotsService());
-        $this->app->singleton(ReserveAppointmentService::class, fn () => new ReserveAppointmentService());
+        $this->app->singleton(AvailabilitiesSlotsService::class, fn () => new AvailabilitiesSlotsService);
+        $this->app->singleton(ReserveAppointmentService::class, fn () => new ReserveAppointmentService);
     }
 
     /**

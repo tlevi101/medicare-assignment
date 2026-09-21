@@ -24,7 +24,7 @@ class UpdatePatientRequest extends FormRequest
     {
         return [
             'name' => ['sometimes', 'string', 'max:255'],
-            'email' => ['sometimes', 'string', 'email:rfc', 'max:255', 'unique:patients,email,' . $this->route('patient')->id],
+            'email' => ['sometimes', 'string', 'email:rfc', 'max:255', 'unique:patients,email,'.$this->route('patient')->id],
             'phone' => ['sometimes', 'string', 'max:255'],
         ];
     }

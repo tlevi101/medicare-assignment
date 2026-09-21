@@ -2,11 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Availability;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\JsonApi\JsonApiResource;
 
 /**
- * @mixin \App\Models\Availability
+ * @mixin Availability
  */
 class AvailabilityResource extends JsonApiResource
 {

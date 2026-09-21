@@ -34,7 +34,7 @@ class AppointmentWithinAvailability
             ->first();
 
         // contain the requested period.
-        if (!$availability) {
+        if (! $availability) {
             $this->fail($validator, self::MESSAGE_OUTSIDE_AVAILABILITY);
 
             return;

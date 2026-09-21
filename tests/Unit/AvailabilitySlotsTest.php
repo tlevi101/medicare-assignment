@@ -3,7 +3,6 @@
 use App\Models\Availability;
 use Illuminate\Support\Carbon;
 
-
 function unsavedAvailability(string $startsAt, string $endsAt, int $slot): Availability
 {
     return new Availability([

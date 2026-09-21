@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Requests\Concerns\TruncatesDateTimeToMinutes;
 use App\Rules\AvailabilitiesNotOverlap;
 use App\Rules\PeriodDivisibleBySlot;
 use Illuminate\Contracts\Validation\ValidationRule;
-use App\Http\Requests\Concerns\TruncatesDateTimeToMinutes;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateAvailabilityRequest extends FormRequest
@@ -28,7 +28,6 @@ class UpdateAvailabilityRequest extends FormRequest
             'ends_at' => $this->truncatesDateTimeToMinutes($this->input('ends_at')),
         ], fn ($value) => $value !== null));
     }
-
 
     /**
      * Get the validation rules that apply to the request.

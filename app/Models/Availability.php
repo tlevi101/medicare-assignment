@@ -38,9 +38,6 @@ class Availability extends Model
         ];
     }
 
-    /**
-     * @return Attribute
-     */
     public function slots(): Attribute
     {
         return Attribute::make(

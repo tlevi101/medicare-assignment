@@ -33,7 +33,6 @@ function createAppointmentAt(
 /**
  * Runs the service over every availability of the given doctors.
  *
- * @param  Doctor  ...$doctors
  * @return Collection<int, array{doctor_id: int, starts_at: Carbon, ends_at: Carbon}>
  */
 function freeSlotsOf(Doctor ...$doctors): Collection
@@ -42,7 +41,7 @@ function freeSlotsOf(Doctor ...$doctors): Collection
         ->whereIn('doctor_id', array_column($doctors, 'id'))
         ->get();
 
-    return (new AvailabilitiesSlotsService())->getFreeSlots($availabilities);
+    return (new AvailabilitiesSlotsService)->getFreeSlots($availabilities);
 }
 
 beforeEach(function () {

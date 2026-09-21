@@ -27,10 +27,10 @@ $fail = function (string $message): never {
 
 if (! extension_loaded('pdo_sqlite')) {
     $fail(
-        "The pdo_sqlite PHP extension is missing, SQLite cannot be used without it.".PHP_EOL
-        ."    Debian / Ubuntu: sudo apt install php-sqlite3".PHP_EOL
-        ."    Arch:            sudo pacman -S php-sqlite, then enable extension=pdo_sqlite in php.ini".PHP_EOL
-        ."    macOS (brew):    already bundled, check with php -m | grep sqlite"
+        'The pdo_sqlite PHP extension is missing, SQLite cannot be used without it.'.PHP_EOL
+        .'    Debian / Ubuntu: sudo apt install php-sqlite3'.PHP_EOL
+        .'    Arch:            sudo pacman -S php-sqlite, then enable extension=pdo_sqlite in php.ini'.PHP_EOL
+        .'    macOS (brew):    already bundled, check with php -m | grep sqlite'
     );
 }
 

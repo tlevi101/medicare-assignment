@@ -8,7 +8,8 @@ use App\Models\Patient;
 
 /**
  * Creates a new appointment with the given status.
- * @param int $startsInHours diff in hours between the appointment and now()
+ *
+ * @param  int  $startsInHours  diff in hours between the appointment and now()
  */
 function appointmentIn(
     Patient $patient,
@@ -39,25 +40,24 @@ beforeEach(function () {
 
     $this->appointment = $this->patient->appointments()->create([
         'doctor_id' => $this->doctor->id,
-        'starts_at' =>  $this->startsAt,
+        'starts_at' => $this->startsAt,
         'ends_at' => (clone $this->startsAt)->addMinutes($this->availability->slot),
     ]);
 
-    $this->otherPatient = \App\Models\Patient::factory()->create();
+    $this->otherPatient = Patient::factory()->create();
     $this->otherAppointment = $this->otherPatient->appointments()->create([
         'doctor_id' => $this->doctor->id,
-        'starts_at' =>  $this->startsAt,
+        'starts_at' => $this->startsAt,
         'ends_at' => (clone $this->startsAt)->addMinutes($this->availability->slot * 2),
     ]);
 
 });
 
-
 describe('route params are scoped', function () {
     it('scopes for cancel', function () {
         $response = $this->postJson(
             "/api/patients/{$this->patient->id}/appointments/{$this->otherAppointment->id}/cancel",
-            ["cancel_reason" => "Foo bar"]
+            ['cancel_reason' => 'Foo bar']
         );
 
         $response->assertStatus(404);
@@ -66,7 +66,7 @@ describe('route params are scoped', function () {
     it('scopes for confirm', function () {
         $response = $this->postJson(
             "/api/patients/{$this->patient->id}/appointments/{$this->otherAppointment->id}/confirm",
-            ["cancel_reason" => "Foo bar"]
+            ['cancel_reason' => 'Foo bar']
         );
 
         $response->assertStatus(404);
@@ -75,7 +75,7 @@ describe('route params are scoped', function () {
     it('scopes for complete', function () {
         $response = $this->postJson(
             "/api/patients/{$this->patient->id}/appointments/{$this->otherAppointment->id}/complete",
-            ["cancel_reason" => "Foo bar"]
+            ['cancel_reason' => 'Foo bar']
         );
 
         $response->assertStatus(404);

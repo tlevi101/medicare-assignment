@@ -28,7 +28,7 @@ class LogAppointmentStatusChange implements ShouldQueue
         AppointmentStatusActivity::create([
             'appointment_id' => $this->appointmentId,
             'previous' => $this->previous,
-            'new' => $this->new
+            'new' => $this->new,
         ]);
     }
 }

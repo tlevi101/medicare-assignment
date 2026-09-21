@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Requests\Concerns\TruncatesDateTimeToMinutes;
 use App\Rules\AvailabilitiesNotOverlap;
 use App\Rules\PeriodDivisibleBySlot;
 use Illuminate\Contracts\Validation\ValidationRule;
-use App\Http\Requests\Concerns\TruncatesDateTimeToMinutes;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreAvailabilityRequest extends FormRequest
@@ -29,7 +29,6 @@ class StoreAvailabilityRequest extends FormRequest
         ], fn ($value) => $value !== null));
     }
 
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -50,7 +49,7 @@ class StoreAvailabilityRequest extends FormRequest
             new AvailabilitiesNotOverlap(
                 doctor: $this->route('doctor')
             ),
-            new PeriodDivisibleBySlot(),
+            new PeriodDivisibleBySlot,
         ];
     }
 }

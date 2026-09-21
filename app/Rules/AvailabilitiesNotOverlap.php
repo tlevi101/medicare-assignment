@@ -10,10 +10,12 @@ use Illuminate\Validation\Validator;
 class AvailabilitiesNotOverlap
 {
     private const MESSAGE = 'The availability overlaps with an existing availability.';
+
     public function __construct(
         private readonly Doctor $doctor,
         private readonly ?Availability $availability = null,
-    ) { }
+    ) {}
+
     public function __invoke(Validator $validator): void
     {
         if ($validator->errors()->hasAny(['starts_at', 'ends_at'])) {
@@ -21,7 +23,7 @@ class AvailabilitiesNotOverlap
         }
 
         $startsAt = Carbon::parse($validator->getData()['starts_at'] ?? $this->availability?->starts_at);
-        $endsAt = Carbon::parse($validator->getData()['ends_at']?? $this->availability?->ends_at);
+        $endsAt = Carbon::parse($validator->getData()['ends_at'] ?? $this->availability?->ends_at);
 
         $overlaps = $this->doctor->availabilities()
             ->where('starts_at', '<', $endsAt)

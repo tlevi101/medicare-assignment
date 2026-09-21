@@ -20,8 +20,8 @@ class AppointmentObserver
      */
     public function updated(Appointment $appointment): void
     {
-        //NOTE: IF activity would need to log payload then dispatching this in observer is not an option
-        if($appointment->wasChanged('status')) {
+        // NOTE: IF activity would need to log payload then dispatching this in observer is not an option
+        if ($appointment->wasChanged('status')) {
             LogAppointmentStatusChange::dispatch(
                 $appointment->id,
                 $appointment->getOriginal('status'),

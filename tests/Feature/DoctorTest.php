@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\Doctor;
+
 test('doctors index', function () {
-    \App\Models\Doctor::factory()->count(3)->create();
+    Doctor::factory()->count(3)->create();
 
     $response = $this->getJson('/api/doctors');
     $response->assertStatus(200)
@@ -9,7 +11,7 @@ test('doctors index', function () {
 });
 
 test('doctors show', function () {
-    $doctor = \App\Models\Doctor::factory()->create();
+    $doctor = Doctor::factory()->create();
 
     $response = $this->getJson("/api/doctors/{$doctor->id}");
 
@@ -22,7 +24,7 @@ test('doctors show', function () {
                     'name' => $doctor->name,
                     'email' => $doctor->email,
                     'expertise' => $doctor->expertise,
-                ]
+                ],
             ],
         ]);
 });
@@ -76,7 +78,7 @@ describe('doctor store: ', function () {
     });
 
     it('fails when email is not unique', function () {
-        $existingDoctor = \App\Models\Doctor::factory()->create();
+        $existingDoctor = Doctor::factory()->create();
 
         $response = $this->postJson('/api/doctors', [
             'name' => 'Dr. John Doe',
@@ -88,10 +90,10 @@ describe('doctor store: ', function () {
             ->assertJsonValidationErrors(['email']);
     });
 
-    it('fails on too long inputs', function() {
+    it('fails on too long inputs', function () {
         $response = $this->postJson('/api/doctors', [
             'name' => str_repeat('a', 256),
-            'email' => str_repeat('a', 256) . '@example.com',
+            'email' => str_repeat('a', 256).'@example.com',
             'expertise' => str_repeat('a', 256),
         ]);
 
@@ -99,12 +101,11 @@ describe('doctor store: ', function () {
             ->assertJsonValidationErrors(['name', 'email', 'expertise']);
     });
 
-
 });
 
 describe('doctor update: ', function () {
     beforeEach(function () {
-        $this->doctor = \App\Models\Doctor::factory()->create();
+        $this->doctor = Doctor::factory()->create();
     });
     it('updates a doctor', function () {
         $doctorData = [
@@ -171,7 +172,7 @@ describe('doctor update: ', function () {
     });
 
     it('fails when email is not unique', function () {
-        $existingDoctor = \App\Models\Doctor::factory()->create();
+        $existingDoctor = Doctor::factory()->create();
 
         $response = $this->putJson("/api/doctors/{$this->doctor->id}", [
             'email' => $existingDoctor->email,
@@ -181,10 +182,10 @@ describe('doctor update: ', function () {
             ->assertJsonValidationErrors(['email']);
     });
 
-    it('rejects too long strings', function() {
+    it('rejects too long strings', function () {
         $response = $this->putJson("/api/doctors/{$this->doctor->id}", [
             'name' => str_repeat('a', 256),
-            'email' => str_repeat('a', 256) . '@example.com',
+            'email' => str_repeat('a', 256).'@example.com',
             'expertise' => str_repeat('a', 256),
         ]);
 
@@ -194,7 +195,7 @@ describe('doctor update: ', function () {
 });
 
 test('doctors delete', function () {
-    $doctor = \App\Models\Doctor::factory()->create();
+    $doctor = Doctor::factory()->create();
 
     $response = $this->deleteJson("/api/doctors/{$doctor->id}");
 

@@ -2,11 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\JsonApi\JsonApiResource;
 
 /**
- * @mixin \App\Models\Appointment
+ * @mixin Appointment
  */
 class AppointmentResource extends JsonApiResource
 {
@@ -24,7 +25,7 @@ class AppointmentResource extends JsonApiResource
     {
         return [
             'patient' => PatientResource::class,
-            'doctor' => DoctorResource::class
+            'doctor' => DoctorResource::class,
         ];
     }
 }

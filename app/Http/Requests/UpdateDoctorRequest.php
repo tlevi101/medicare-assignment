@@ -24,8 +24,8 @@ class UpdateDoctorRequest extends FormRequest
     {
         return [
             'name' => ['sometimes', 'string', 'max:255'],
-            'email' => ['sometimes', 'string', 'email:rfc', 'max:255', 'unique:doctors,email,' . $this->route('doctor')->id],
-            'expertise' => ['sometimes', 'string', 'max:255']
+            'email' => ['sometimes', 'string', 'email:rfc', 'max:255', 'unique:doctors,email,'.$this->route('doctor')->id],
+            'expertise' => ['sometimes', 'string', 'max:255'],
         ];
     }
 }

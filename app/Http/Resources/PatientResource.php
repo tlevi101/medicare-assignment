@@ -2,10 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Patient;
 use Illuminate\Http\Resources\JsonApi\JsonApiResource;
 
 /**
- * @mixin \App\Models\Patient
+ * @mixin Patient
  */
 class PatientResource extends JsonApiResource
 {

@@ -4,6 +4,7 @@ use App\Http\Requests\FreeSlotsRequest;
 use App\Models\Appointment;
 use App\Models\Availability;
 use App\Models\Doctor;
+use Illuminate\Support\Carbon;
 
 beforeEach(function () {
     $this->doctor = Doctor::factory()->create();
@@ -103,7 +104,7 @@ describe('free slots', function () {
 
         $slots = collect($response->json('data'))
             ->pluck('attributes.starts_at')
-            ->map(fn (string $startsAt) => \Illuminate\Support\Carbon::parse($startsAt));
+            ->map(fn (string $startsAt) => Carbon::parse($startsAt));
 
         expect($slots->every(fn ($startsAt) => $startsAt->gte(now())))->toBeTrue();
     });

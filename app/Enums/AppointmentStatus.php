@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum AppointmentStatus : string
+enum AppointmentStatus: string
 {
     case Pending = 'pending';
     case Confirmed = 'confirmed';
@@ -13,8 +13,6 @@ enum AppointmentStatus : string
 
     /**
      * Determinate if a status can move to another status.
-     * @param AppointmentStatus $newStatus
-     * @return bool
      */
     public function canTransitionTo(self $newStatus): bool
     {
@@ -25,5 +23,4 @@ enum AppointmentStatus : string
             self::Cancelled => false,
         };
     }
-
 }

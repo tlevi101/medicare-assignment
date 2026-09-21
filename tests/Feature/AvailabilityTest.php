@@ -1,11 +1,14 @@
 <?php
 
+use App\Models\Availability;
+use App\Models\Doctor;
+
 beforeEach(function () {
-    $this->doctor = \App\Models\Doctor::factory()->create();
+    $this->doctor = Doctor::factory()->create();
 });
 
 test('availabilities index', function () {
-    \App\Models\Availability::factory()->count(3)->create(['doctor_id' => $this->doctor->id]);
+    Availability::factory()->count(3)->create(['doctor_id' => $this->doctor->id]);
 
     $response = $this->getJson("/api/doctors/{$this->doctor->id}/availabilities");
 
@@ -14,8 +17,8 @@ test('availabilities index', function () {
 });
 
 test('availabilities index only lists the given doctor availabilities', function () {
-    \App\Models\Availability::factory()->count(2)->create(['doctor_id' => $this->doctor->id]);
-    \App\Models\Availability::factory()->count(3)->create();
+    Availability::factory()->count(2)->create(['doctor_id' => $this->doctor->id]);
+    Availability::factory()->count(3)->create();
 
     $response = $this->getJson("/api/doctors/{$this->doctor->id}/availabilities");
 
@@ -23,9 +26,9 @@ test('availabilities index only lists the given doctor availabilities', function
         ->assertJsonCount(2, 'data');
 });
 
-describe('availabilities show', function (){
+describe('availabilities show', function () {
     it('returns availability for the related doctor', function () {
-        $availability = \App\Models\Availability::factory()->create(['doctor_id' => $this->doctor->id]);
+        $availability = Availability::factory()->create(['doctor_id' => $this->doctor->id]);
 
         $response = $this->getJson("/api/doctors/{$this->doctor->id}/availabilities/{$availability->id}");
 
@@ -42,7 +45,7 @@ describe('availabilities show', function (){
     });
 
     it('fails when the availability does not belong to the doctor', function () {
-        $availability = \App\Models\Availability::factory()->create();
+        $availability = Availability::factory()->create();
 
         $response = $this->getJson("/api/doctors/{$this->doctor->id}/availabilities/{$availability->id}");
 
@@ -143,7 +146,7 @@ describe('availability store: ', function () {
 
         beforeEach(function () {
             $this->startsAt = now()->addDay()->startOfHour();
-            \App\Models\Availability::factory()->create([
+            Availability::factory()->create([
                 'doctor_id' => $this->doctor->id,
                 'starts_at' => $this->startsAt,
                 'ends_at' => (clone $this->startsAt)->addHours(4),
@@ -185,7 +188,7 @@ describe('availability store: ', function () {
 
     it('allows an availability adjacent to an existing one', function () {
         $startsAt = now()->addDay()->startOfHour();
-        \App\Models\Availability::factory()->create([
+        Availability::factory()->create([
             'doctor_id' => $this->doctor->id,
             'starts_at' => $startsAt,
             'ends_at' => (clone $startsAt)->addHours(4),
@@ -203,7 +206,7 @@ describe('availability store: ', function () {
 
     it('allows an overlap with another doctor availability', function () {
         $startsAt = now()->addDay()->startOfHour();
-        \App\Models\Availability::factory()->create([
+        Availability::factory()->create([
             'starts_at' => $startsAt,
             'ends_at' => (clone $startsAt)->addHours(4),
             'slot' => 60,
@@ -222,7 +225,7 @@ describe('availability store: ', function () {
 describe('availability update: ', function () {
     beforeEach(function () {
         $this->startsAt = now()->addDay()->startOfHour();
-        $this->availability = \App\Models\Availability::factory()->create([
+        $this->availability = Availability::factory()->create([
             'doctor_id' => $this->doctor->id,
             'starts_at' => $this->startsAt,
             'ends_at' => (clone $this->startsAt)->addHours(4),
@@ -302,7 +305,7 @@ describe('availability update: ', function () {
 
     describe('rejects overlapping availabilities when ', function () {
         beforeEach(function () {
-            \App\Models\Availability::factory()->create([
+            Availability::factory()->create([
                 'doctor_id' => $this->doctor->id,
                 'starts_at' => (clone $this->startsAt)->addHours(5),
                 'ends_at' => (clone $this->startsAt)->addHours(9),
@@ -393,7 +396,7 @@ describe('availability update: ', function () {
 });
 
 test('availabilities delete', function () {
-    $availability = \App\Models\Availability::factory()->create(['doctor_id' => $this->doctor->id]);
+    $availability = Availability::factory()->create(['doctor_id' => $this->doctor->id]);
 
     $response = $this->deleteJson("/api/doctors/{$this->doctor->id}/availabilities/{$availability->id}");
 

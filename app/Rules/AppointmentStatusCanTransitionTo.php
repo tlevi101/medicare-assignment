@@ -12,7 +12,9 @@ use Illuminate\Validation\Validator;
 class AppointmentStatusCanTransitionTo
 {
     const string MESSAGE = "Appointment status can't be changed to: ";
+
     const int CANCEL_WINDOW = 24; // In hours
+
     public function __construct(
         protected AppointmentStatus $targetStatus,
         public Appointment $appointment
@@ -20,15 +22,15 @@ class AppointmentStatusCanTransitionTo
 
     public function __invoke(Validator $validator): void
     {
-        if(!$this->appointment->status->canTransitionTo($this->targetStatus)) {
-            $validator->errors()->add('status', self::MESSAGE . $this->targetStatus->value);
+        if (! $this->appointment->status->canTransitionTo($this->targetStatus)) {
+            $validator->errors()->add('status', self::MESSAGE.$this->targetStatus->value);
         }
 
-        if($this->targetStatus === AppointmentStatus::Cancelled &&
+        if ($this->targetStatus === AppointmentStatus::Cancelled &&
             $this->appointment->status === AppointmentStatus::Confirmed &&
             $this->appointment->starts_at->lt(now()->addHours(self::CANCEL_WINDOW))
         ) {
-            $validator->errors()->add('status', self::MESSAGE . $this->targetStatus->value);
+            $validator->errors()->add('status', self::MESSAGE.$this->targetStatus->value);
         }
     }
 }

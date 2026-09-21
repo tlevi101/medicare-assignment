@@ -10,8 +10,6 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
-/**
- */
 class ReserveAppointmentService
 {
     public const string SLOT_RESERVED = 'Slot is not free';
@@ -21,9 +19,9 @@ class ReserveAppointmentService
     /**
      * Reserve an appointment for the patient. It first locks the table for updates, then checks if it can reserve the slot.
      * If not throws validation exception.
-     * @param Patient $patient
-     * @param array{doctor_id: int, starts_at: string, ends_at: string} $attributes
-     * @return Appointment
+     *
+     * @param  array{doctor_id: int, starts_at: string, ends_at: string}  $attributes
+     *
      * @throws ValidationException|\Throwable
      */
     public function reserve(Patient $patient, array $attributes): Appointment
@@ -51,6 +49,7 @@ class ReserveAppointmentService
 
     /**
      * Check the slot if its taken already or not
+     *
      * @throws ValidationException
      */
     private function checkIfSlotIsFree(int $doctorId, Carbon $startsAt, Carbon $endsAt): void
@@ -68,6 +67,7 @@ class ReserveAppointmentService
 
     /**
      * Check if the patient already has an active appointment. Throw validation error if they have
+     *
      * @throws ValidationException
      */
     private function checkIfPatientIsFree(Patient $patient, Carbon $startsAt, Carbon $endsAt): void
@@ -84,8 +84,7 @@ class ReserveAppointmentService
 
     /**
      * When a condition fails it throws an exception
-     * @param string $message
-     * @return never
+     *
      * @throws ValidationException
      */
     private function reject(string $message): never

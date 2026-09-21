@@ -2,11 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Doctor;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\JsonApi\JsonApiResource;
 
 /**
- * @mixin \App\Models\Doctor
+ * @mixin Doctor
  */
 class DoctorResource extends JsonApiResource
 {
