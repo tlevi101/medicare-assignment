@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Enums\AppointmentStatus;
+use App\Http\Requests\AppointmentStatus\AppointmentCancelRequest;
+use App\Http\Requests\AppointmentStatus\AppointmentCompleteRequest;
+use App\Http\Requests\AppointmentStatus\AppointmentConfirmRequest;
+use App\Http\Requests\AppointmentStatus\AppointmentTransitionRequest;
 use App\Http\Requests\IndexAppointmentRequest;
 use App\Http\Requests\StoreAppointmentRequest;
+use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 use App\Models\Patient;
 
@@ -46,4 +51,33 @@ class AppointmentController extends Controller
     }
 
 
+    public function cancel(AppointmentCancelRequest $request, Patient $patient, Appointment $appointment)
+    {
+        $appointment->update([
+            ...$request->validated(),
+            'status' => $request->targetStatus(),
+        ]);
+
+        return $appointment->toResource();
+    }
+
+    public function complete(AppointmentCompleteRequest $request, Patient $patient, Appointment $appointment)
+    {
+        $appointment->update([
+            ...$request->validated(),
+            'status' => $request->targetStatus(),
+        ]);
+
+        return $appointment->toResource();
+    }
+
+    public function confirm(AppointmentConfirmRequest $request, Patient $patient, Appointment $appointment)
+    {
+        $appointment->update([
+            ...$request->validated(),
+            'status' => $request->targetStatus(),
+        ]);
+
+        return $appointment->toResource();
+    }
 }

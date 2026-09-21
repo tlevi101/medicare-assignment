@@ -19,7 +19,7 @@ return new class extends Migration
             $table->dateTime('starts_at');
             $table->dateTime('ends_at');
             $table->enum('status', ['pending', 'confirmed', 'completed', 'canceled'])->default('pending');
-            $table->text('cancel_reason')->nullable();
+            $table->string('cancel_reason', 500)->nullable();
 
             $table->index(['patient_id', 'doctor_id', 'status']);
             $table->index(['patient_id', 'doctor_id', 'starts_at', 'ends_at']);

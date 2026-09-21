@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use App\Enums\AppointmentStatus;
+use App\Observers\AppointmentObserver;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 /**
@@ -16,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder<static> status(AppointmentStatus $status) Filters to a single appointment status
  */
 #[Fillable(['patient_id', 'doctor_id', 'starts_at', 'ends_at', 'status', 'cancel_reason'])]
+#[ObservedBy(AppointmentObserver::class)]
 class Appointment extends Model
 {
     /** @use HasFactory<\Database\Factories\AppointmentFactory> */
@@ -46,6 +50,14 @@ class Appointment extends Model
         return $this->belongsTo(Doctor::class);
     }
 
+    /**
+     * @return HasMany<AppointmentStatusActivity, $this>
+     */
+    public function statusActivities(): HasMany
+    {
+        return $this->hasMany(AppointmentStatusActivity::class);
+    }
+
     #[Scope]
     protected function status(Builder $query, AppointmentStatus $status): void
     {
@@ -62,4 +74,6 @@ class Appointment extends Model
     {
         $query->where('status', '!=', AppointmentStatus::Cancelled);
     }
+
+
 }
