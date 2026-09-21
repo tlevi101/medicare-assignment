@@ -56,6 +56,7 @@ composer install
 A [scripts/use-sqlite.php](scripts/use-sqlite.php) írja meg a natív `.env`-et: a `.env.example`-ből
 indul ki, a `DB_*` beállításokat SQLite-ra cseréli, az `APP_URL`-t a `php artisan serve` portjára
 állítja, és létrehozza a `database/database.sqlite` fájlt.
+*Megjegyjés: Ezt a scriptet AI dobta össze*
 
 ```bash
 composer sqlite
