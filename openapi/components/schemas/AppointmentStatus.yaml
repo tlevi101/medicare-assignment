@@ -2,7 +2,16 @@ title: AppointmentStatus
 type: string
 description: |
   The lifecycle status of an appointment. A newly created appointment is always
-  `pending`; `completed` and `canceled` are final states.
+  `pending`, and the status only moves through the transition endpoints:
+
+  | from | to | endpoint |
+  |---|---|---|
+  | `pending` | `confirmed` | `POST .../confirm` |
+  | `confirmed` | `completed` | `POST .../complete` |
+  | `pending` | `canceled` | `POST .../cancel`, at any time |
+  | `confirmed` | `canceled` | `POST .../cancel`, until 24 hours before it starts |
+
+  `completed` and `canceled` are final: no transition leads out of them.
 enum:
   - pending
   - confirmed

@@ -1,0 +1,15 @@
+title: AppointmentCancel
+type: object
+description: |
+  Request body accepted by the cancel transition. The reason is required here and
+  is not accepted by the other two transitions: it only carries meaning for a
+  cancelled appointment.
+required:
+  - cancel_reason
+properties:
+  cancel_reason:
+    type: string
+    maxLength: 500
+    description: Why the appointment was cancelled. Stored as sent.
+    examples:
+      - The patient asked for a later date.

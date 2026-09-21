@@ -1,0 +1,40 @@
+description: |
+  The transition is not allowed, or the body failed validation.
+
+  A rejected transition is reported on a `status` key even though the client never
+  submits a status: the target is decided by the endpoint, not by the body.
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/ValidationError.yaml'
+    examples:
+      illegalTransition:
+        summary: The current status cannot move to the target status
+        value:
+          message: 'Appointment status can''t be changed to: completed'
+          errors:
+            status:
+              - 'Appointment status can''t be changed to: completed'
+      cancelledTooLate:
+        summary: |
+          A confirmed appointment can only be cancelled at least 24 hours before
+          it starts. The message is the same as for an illegal transition.
+        value:
+          message: 'Appointment status can''t be changed to: canceled'
+          errors:
+            status:
+              - 'Appointment status can''t be changed to: canceled'
+      missingCancelReason:
+        summary: The cancel transition was called without a reason
+        value:
+          message: The cancel reason field is required.
+          errors:
+            cancel_reason:
+              - The cancel reason field is required.
+      cancelReasonTooLong:
+        summary: The reason exceeds 500 characters
+        value:
+          message: The cancel reason field must not be greater than 500 characters.
+          errors:
+            cancel_reason:
+              - The cancel reason field must not be greater than 500 characters.

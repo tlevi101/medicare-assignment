@@ -1,0 +1,25 @@
+post:
+  tags:
+    - Appointments
+  summary: Confirm an appointment
+  operationId: confirmAppointment
+  description: |
+    Moves the appointment from `pending` to `confirmed`, which is the doctor
+    accepting the booking.
+
+    Only a `pending` appointment can be confirmed; every other status answers
+    with a 422 and the appointment is left untouched. The endpoint takes no body.
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/PatientId'
+    - $ref: '../../components/parameters/index.yaml#/AppointmentId'
+  responses:
+    '200':
+      description: The confirmed appointment.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/AppointmentResponse.yaml'
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'
+    '422':
+      $ref: '../../components/responses/AppointmentTransitionRejected.yaml'

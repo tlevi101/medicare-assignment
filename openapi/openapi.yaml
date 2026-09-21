@@ -44,10 +44,16 @@ paths:
     $ref: './paths/availabilities/index.yaml'
   /doctors/{doctor}/availabilities/{availability}:
     $ref: './paths/availabilities/availability.yaml'
-  /patient/{patient}/appointments:
+  /patients/{patient}/appointments:
     $ref: './paths/appointments/index.yaml'
-  /patient/{patient}/appointments/{appointment}:
+  /patients/{patient}/appointments/{appointment}:
     $ref: './paths/appointments/appointment.yaml'
+  /patients/{patient}/appointments/{appointment}/confirm:
+    $ref: './paths/appointments/confirm.yaml'
+  /patients/{patient}/appointments/{appointment}/complete:
+    $ref: './paths/appointments/complete.yaml'
+  /patients/{patient}/appointments/{appointment}/cancel:
+    $ref: './paths/appointments/cancel.yaml'
   /doctors/{doctor}/free-slots:
     $ref: './paths/free-slots/index.yaml'
 

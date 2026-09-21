@@ -21,7 +21,7 @@ Route::resource(
 )->scoped();
 
 Route::resource(
-    'patient.appointments',
+    'patients.appointments',
     \App\Http\Controllers\AppointmentController::class,
     ['only' => ['index', 'store', 'show']]
 )->scoped();

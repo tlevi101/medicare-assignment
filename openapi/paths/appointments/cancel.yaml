@@ -1,0 +1,35 @@
+post:
+  tags:
+    - Appointments
+  summary: Cancel an appointment
+  operationId: cancelAppointment
+  description: |
+    Moves a `pending` or `confirmed` appointment to `canceled`, which is a final
+    status, and stores the reason.
+
+    A `pending` appointment can be cancelled at any time. A `confirmed` one only
+    until 24 hours before it starts; later than that the request is rejected and
+    the appointment stays confirmed.
+
+    Cancelling releases the slot: it shows up in the doctor's free slots again,
+    and another patient can book it.
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/PatientId'
+    - $ref: '../../components/parameters/index.yaml#/AppointmentId'
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/AppointmentCancel.yaml'
+  responses:
+    '200':
+      description: The cancelled appointment.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/AppointmentResponse.yaml'
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'
+    '422':
+      $ref: '../../components/responses/AppointmentTransitionRejected.yaml'

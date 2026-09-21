@@ -43,7 +43,7 @@ describe('appointments index', function () {
     it('lists the appointments of the patient', function () {
         Appointment::factory()->count(3)->create(['patient_id' => $this->patient->id]);
 
-        $response = $this->getJson("/api/patient/{$this->patient->id}/appointments");
+        $response = $this->getJson("/api/patients/{$this->patient->id}/appointments");
 
         $response->assertStatus(200)
             ->assertJsonCount(3, 'data');
@@ -53,7 +53,7 @@ describe('appointments index', function () {
         Appointment::factory()->count(2)->create(['patient_id' => $this->patient->id]);
         Appointment::factory()->count(3)->create();
 
-        $response = $this->getJson("/api/patient/{$this->patient->id}/appointments");
+        $response = $this->getJson("/api/patients/{$this->patient->id}/appointments");
 
         $response->assertStatus(200)
             ->assertJsonCount(2, 'data');
@@ -64,7 +64,7 @@ describe('appointments index', function () {
         Appointment::factory()->confirmed()->count(3)->create(['patient_id' => $this->patient->id]);
 
         $response = $this->getJson(
-            "/api/patient/{$this->patient->id}/appointments?filter[status]=confirmed"
+            "/api/patients/{$this->patient->id}/appointments?filter[status]=confirmed"
         );
 
         $response->assertStatus(200)
@@ -76,7 +76,7 @@ describe('appointments index', function () {
         Appointment::factory()->count(2)->create(['patient_id' => $this->patient->id]);
         Appointment::factory()->confirmed()->count(3)->create(['patient_id' => $this->patient->id]);
 
-        $response = $this->getJson("/api/patient/{$this->patient->id}/appointments");
+        $response = $this->getJson("/api/patients/{$this->patient->id}/appointments");
 
         $response->assertStatus(200)
             ->assertJsonCount(5, 'data');
@@ -84,7 +84,7 @@ describe('appointments index', function () {
 
     it('rejects an unknown status', function () {
         $response = $this->getJson(
-            "/api/patient/{$this->patient->id}/appointments?filter[status]=nope"
+            "/api/patients/{$this->patient->id}/appointments?filter[status]=nope"
         );
 
         $response->assertStatus(422)
@@ -95,7 +95,7 @@ describe('appointments show', function () {
     it('returns the appointment of the related patient', function () {
         $appointment = Appointment::factory()->create(['patient_id' => $this->patient->id]);
 
-        $response = $this->getJson("/api/patient/{$this->patient->id}/appointments/{$appointment->id}");
+        $response = $this->getJson("/api/patients/{$this->patient->id}/appointments/{$appointment->id}");
 
         $response->assertStatus(200)
             ->assertJson([
@@ -112,7 +112,7 @@ describe('appointments show', function () {
     it('fails when the appointment does not belong to the patient', function () {
         $appointment = Appointment::factory()->create();
 
-        $response = $this->getJson("/api/patient/{$this->patient->id}/appointments/{$appointment->id}");
+        $response = $this->getJson("/api/patients/{$this->patient->id}/appointments/{$appointment->id}");
 
         $response->assertStatus(404);
     });
@@ -121,7 +121,7 @@ describe('appointments show', function () {
 describe('appointment store: ', function () {
     it('creates an appointment with a pending status', function () {
         $response = $this->postJson(
-            "/api/patient/{$this->patient->id}/appointments",
+            "/api/patients/{$this->patient->id}/appointments",
             bookingPayload($this->availability)
         );
 
@@ -158,14 +158,14 @@ describe('appointment store: ', function () {
     });
 
     it('requires doctor_id, starts_at and ends_at', function () {
-        $response = $this->postJson("/api/patient/{$this->patient->id}/appointments", []);
+        $response = $this->postJson("/api/patients/{$this->patient->id}/appointments", []);
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['doctor_id', 'starts_at', 'ends_at']);
     });
 
     it('rejects an unknown doctor', function () {
-        $response = $this->postJson("/api/patient/{$this->patient->id}/appointments", [
+        $response = $this->postJson("/api/patients/{$this->patient->id}/appointments", [
             ...bookingPayload($this->availability),
             'doctor_id' => $this->doctor->id + 999,
         ]);
@@ -175,7 +175,7 @@ describe('appointment store: ', function () {
     });
 
     it('rejects a starts_at in the past', function () {
-        $response = $this->postJson("/api/patient/{$this->patient->id}/appointments", [
+        $response = $this->postJson("/api/patients/{$this->patient->id}/appointments", [
             'doctor_id' => $this->doctor->id,
             'starts_at' => now()->subDay()->startOfHour()->toIso8601String(),
             'ends_at' => now()->subDay()->startOfHour()->addMinutes(30)->toIso8601String(),
@@ -186,7 +186,7 @@ describe('appointment store: ', function () {
     });
 
     it('rejects ends_at before starts_at', function () {
-        $response = $this->postJson("/api/patient/{$this->patient->id}/appointments", [
+        $response = $this->postJson("/api/patients/{$this->patient->id}/appointments", [
             'doctor_id' => $this->doctor->id,
             'starts_at' => (clone $this->startsAt)->addMinutes(30)->toIso8601String(),
             'ends_at' => $this->startsAt->toIso8601String(),
@@ -197,7 +197,7 @@ describe('appointment store: ', function () {
     });
 
     it('truncates the seconds of the requested period', function () {
-        $response = $this->postJson("/api/patient/{$this->patient->id}/appointments", [
+        $response = $this->postJson("/api/patients/{$this->patient->id}/appointments", [
             'doctor_id' => $this->doctor->id,
             'starts_at' => (clone $this->startsAt)->addSeconds(45)->toIso8601String(),
             'ends_at' => (clone $this->startsAt)->addMinutes(30)->addSeconds(59)->toIso8601String(),
@@ -213,7 +213,7 @@ describe('appointment store: ', function () {
 
     it('rejects a period outside every availability of the doctor', function () {
         $response = $this->postJson(
-            "/api/patient/{$this->patient->id}/appointments",
+            "/api/patients/{$this->patient->id}/appointments",
             bookingPayload($this->availability, offsetInMinutes: 5 * 60)
         );
 
@@ -223,7 +223,7 @@ describe('appointment store: ', function () {
 
     it('rejects a period that is not aligned to the slot grid', function () {
         $response = $this->postJson(
-            "/api/patient/{$this->patient->id}/appointments",
+            "/api/patients/{$this->patient->id}/appointments",
             bookingPayload($this->availability, offsetInMinutes: 7)
         );
 
@@ -233,7 +233,7 @@ describe('appointment store: ', function () {
 
     it('rejects a period longer than the slot', function () {
         $response = $this->postJson(
-            "/api/patient/{$this->patient->id}/appointments",
+            "/api/patients/{$this->patient->id}/appointments",
             bookingPayload($this->availability, lengthInMinutes: 60)
         );
 
@@ -249,7 +249,7 @@ describe('appointment store: ', function () {
         ]);
 
         $response = $this->postJson(
-            "/api/patient/{$this->patient->id}/appointments",
+            "/api/patients/{$this->patient->id}/appointments",
             bookingPayload($this->availability)
         );
 
@@ -265,7 +265,7 @@ describe('appointment store: ', function () {
         ]);
 
         $response = $this->postJson(
-            "/api/patient/{$this->patient->id}/appointments",
+            "/api/patients/{$this->patient->id}/appointments",
             bookingPayload($this->availability, offsetInMinutes: 30)
         );
 
@@ -287,7 +287,7 @@ describe('appointment store: ', function () {
         ]);
 
         $response = $this->postJson(
-            "/api/patient/{$this->patient->id}/appointments",
+            "/api/patients/{$this->patient->id}/appointments",
             bookingPayload($this->availability)
         );
 
@@ -302,7 +302,7 @@ describe('appointment store: ', function () {
         ]);
 
         $response = $this->postJson(
-            "/api/patient/{$this->patient->id}/appointments",
+            "/api/patients/{$this->patient->id}/appointments",
             bookingPayload($this->availability)
         );
 
@@ -319,7 +319,7 @@ describe('appointment store: ', function () {
         ]);
 
         $response = $this->postJson(
-            "/api/patient/{$this->patient->id}/appointments",
+            "/api/patients/{$this->patient->id}/appointments",
             bookingPayload($this->availability)
         );
 
@@ -340,7 +340,7 @@ describe('appointment store: ', function () {
         ]);
 
         $response = $this->postJson(
-            "/api/patient/{$this->patient->id}/appointments",
+            "/api/patients/{$this->patient->id}/appointments",
             bookingPayload($this->availability)
         );
 
@@ -356,7 +356,7 @@ describe('appointment store: ', function () {
         ]);
 
         $response = $this->postJson(
-            "/api/patient/{$this->patient->id}/appointments",
+            "/api/patients/{$this->patient->id}/appointments",
             bookingPayload($this->availability)
         );
 
@@ -371,7 +371,7 @@ describe('appointment store: ', function () {
         ]);
 
         $response = $this->postJson(
-            "/api/patient/{$this->patient->id}/appointments",
+            "/api/patients/{$this->patient->id}/appointments",
             bookingPayload($this->availability)
         );
 

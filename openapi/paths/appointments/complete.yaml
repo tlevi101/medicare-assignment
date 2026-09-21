@@ -1,0 +1,25 @@
+post:
+  tags:
+    - Appointments
+  summary: Complete an appointment
+  operationId: completeAppointment
+  description: |
+    Moves the appointment from `confirmed` to `completed`, which is the doctor
+    closing the visit. `completed` is a final status.
+
+    Only a `confirmed` appointment can be completed — a `pending` one has to be
+    confirmed first. The endpoint takes no body.
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/PatientId'
+    - $ref: '../../components/parameters/index.yaml#/AppointmentId'
+  responses:
+    '200':
+      description: The completed appointment.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/AppointmentResponse.yaml'
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'
+    '422':
+      $ref: '../../components/responses/AppointmentTransitionRejected.yaml'
