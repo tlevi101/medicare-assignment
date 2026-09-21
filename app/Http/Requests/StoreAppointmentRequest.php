@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\AvailabilitiesNotOverlap;
-use App\Rules\PeriodDivisibleBySlot;
+use App\Rules\AppointmentWithinAvailability;
+use App\Rules\SlotIsFree;
 use Illuminate\Contracts\Validation\ValidationRule;
 use App\Http\Requests\Concerns\TruncatesDateTimeToMinutes;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateAvailabilityRequest extends FormRequest
+class StoreAppointmentRequest extends FormRequest
 {
     use TruncatesDateTimeToMinutes;
 
@@ -29,7 +29,6 @@ class UpdateAvailabilityRequest extends FormRequest
         ], fn ($value) => $value !== null));
     }
 
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -38,20 +37,17 @@ class UpdateAvailabilityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'starts_at' => ['sometimes', 'date', 'before:ends_at', 'after:now'],
-            'ends_at' => ['sometimes', 'date', 'after:starts_at'],
-            'slot' => ['sometimes', 'integer', 'min:30'],
+            'doctor_id' => ['required', 'exists:doctors,id'],
+            'starts_at' => ['required', 'date', 'after:now'],
+            'ends_at' => ['required', 'date', 'after:starts_at'],
         ];
     }
 
-    public function after(): array
+    public function after()
     {
         return [
-            new AvailabilitiesNotOverlap(
-                doctor: $this->route('doctor'),
-                availability: $this->route('availability')
-            ),
-            new PeriodDivisibleBySlot($this->route('availability')),
+            new AppointmentWithinAvailability(),
+            new SlotIsFree()
         ];
     }
 }

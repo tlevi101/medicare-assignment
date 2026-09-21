@@ -5,10 +5,13 @@ namespace App\Http\Requests;
 use App\Rules\AvailabilitiesNotOverlap;
 use App\Rules\PeriodDivisibleBySlot;
 use Illuminate\Contracts\Validation\ValidationRule;
+use App\Http\Requests\Concerns\TruncatesDateTimeToMinutes;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreAvailabilityRequest extends FormRequest
 {
+    use TruncatesDateTimeToMinutes;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -16,6 +19,16 @@ class StoreAvailabilityRequest extends FormRequest
     {
         return true;
     }
+
+    public function prepareForValidation(): void
+    {
+        // Only the keys that were actually submitted are merged back
+        $this->merge(array_filter([
+            'starts_at' => $this->truncatesDateTimeToMinutes($this->input('starts_at')),
+            'ends_at' => $this->truncatesDateTimeToMinutes($this->input('ends_at')),
+        ], fn ($value) => $value !== null));
+    }
+
 
     /**
      * Get the validation rules that apply to the request.

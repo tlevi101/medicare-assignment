@@ -19,3 +19,9 @@ Route::resource(
     \App\Http\Controllers\AvailabilityController::class,
     ['except' => ['create', 'edit']]
 )->scoped();
+
+Route::resource(
+    'patient.appointments',
+    \App\Http\Controllers\AppointmentController::class,
+    ['only' => ['index', 'store', 'show']]
+)->scoped();

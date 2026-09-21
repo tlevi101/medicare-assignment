@@ -20,10 +20,18 @@ class Doctor extends Model
     use HasFactory;
 
     /**
-     * @return HasMany<Availability>
+     * @return HasMany<Availability, $this>
      */
     public function availabilities(): HasMany
     {
         return $this->hasMany(Availability::class);
+    }
+
+    /**
+     * @return HasMany<Appointment, $this>
+     */
+    public function appointments(): HasMany
+    {
+        return $this->hasMany(Appointment::class);
     }
 }

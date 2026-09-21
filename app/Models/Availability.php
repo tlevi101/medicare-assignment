@@ -20,7 +20,7 @@ class Availability extends Model
     use HasFactory;
 
     /**
-     * @return BelongsTo<Doctor>
+     * @return BelongsTo<Doctor, $this>
      */
     public function doctor(): BelongsTo
     {
