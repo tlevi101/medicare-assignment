@@ -2,34 +2,38 @@
 
 namespace App\Rules;
 
-use App\Models\Appointment;
+use App\Models\Patient;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Validator;
 
 /**
- * Checks if there is any other active appointment to the same doctor in the same time slot.
+ * Checks if the patient already has an active appointment overlapping the
+ * requested period, with any doctor.
  */
-class SlotIsFree
+class PatientHasNoConflictingAppointment
 {
-    const MESSAGE = 'Slot is not free';
+    private const MESSAGE = 'The patient already has an appointment in this period.';
+
+    public function __construct(
+        private readonly Patient $patient,
+    ) { }
 
     public function __invoke(Validator $validator): void
     {
-        if ($validator->errors()->hasAny(['starts_at', 'ends_at', 'doctor_id'])) {
+        if ($validator->errors()->hasAny(['starts_at', 'ends_at'])) {
             return;
         }
 
         $startsAt = Carbon::parse($validator->getData()['starts_at']);
         $endsAt = Carbon::parse($validator->getData()['ends_at']);
-        $doctorId = $validator->getData()['doctor_id'];
 
-        $appointmentExists = Appointment::where('doctor_id', $doctorId)
+        $conflicts = $this->patient->appointments()
             ->where('starts_at', '<', $endsAt)
             ->where('ends_at', '>', $startsAt)
             ->active()
             ->exists();
 
-        if ($appointmentExists) {
+        if ($conflicts) {
             $validator->errors()->add('starts_at', self::MESSAGE);
             $validator->errors()->add('ends_at', self::MESSAGE);
         }

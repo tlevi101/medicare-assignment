@@ -46,6 +46,16 @@ AvailabilityId:
     format: int64
     minimum: 1
 
+AppointmentId:
+  name: appointment
+  in: path
+  required: true
+  description: ID of the appointment.
+  schema:
+    type: integer
+    format: int64
+    minimum: 1
+
 Include:
   name: include
   in: query
@@ -63,3 +73,33 @@ Include:
       value: doctor
     nested:
       value: doctor,doctor.nestedRelation
+
+StatusFilter:
+  name: filter[status]
+  in: query
+  required: false
+  description: |
+    Returns only the appointments in the given status. `filter` is the parameter
+    name reserved by JSON:API; its contents are application specific, so the
+    supported keys are documented here rather than by the convention.
+  schema:
+    $ref: '../schemas/AppointmentStatus.yaml'
+  examples:
+    pending:
+      value: pending
+
+AppointmentInclude:
+  name: include
+  in: query
+  required: false
+  description: |
+    Comma separated list of relationships to side-load. The named relationships
+    appear under `data.relationships` and the related resources under the
+    top-level `included` array. Accepts `patient` and `doctor`.
+  schema:
+    type: string
+  examples:
+    doctor:
+      value: doctor
+    both:
+      value: doctor,patient

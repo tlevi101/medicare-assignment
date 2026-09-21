@@ -1,0 +1,20 @@
+get:
+  tags:
+    - Appointments
+  summary: Show an appointment
+  operationId: showAppointment
+  description: |
+    Returns one appointment of the patient. When the appointment is not related to the patient it returns a 404
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/PatientId'
+    - $ref: '../../components/parameters/index.yaml#/AppointmentId'
+    - $ref: '../../components/parameters/index.yaml#/AppointmentInclude'
+  responses:
+    '200':
+      description: The appointment.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/AppointmentResponse.yaml'
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'

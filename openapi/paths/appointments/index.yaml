@@ -1,0 +1,62 @@
+get:
+  tags:
+    - Appointments
+  summary: List a patient's appointments
+  operationId: listAppointments
+  description: |
+    Returns a paginated response of the patient's appointments, perPage is not
+    required and it defaults to 25.
+
+    Without `filter[status]` every status is returned, including the cancelled
+    and completed ones.
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/PatientId'
+    - $ref: '../../components/parameters/index.yaml#/StatusFilter'
+    - $ref: '../../components/parameters/index.yaml#/Page'
+    - $ref: '../../components/parameters/index.yaml#/PerPage'
+    - $ref: '../../components/parameters/index.yaml#/AppointmentInclude'
+  responses:
+    '200':
+      description: A page of appointments.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/AppointmentCollectionResource.yaml'
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'
+    '422':
+      $ref: '../../components/responses/AppointmentQueryInvalid.yaml'
+
+post:
+  tags:
+    - Appointments
+  summary: Book an appointment
+  operationId: createAppointment
+  description: |
+    Books one slot of a doctor's availability for the patient. The created
+    appointment always starts in the `pending` status.
+
+    The requested period has to be exactly one bookable slot: it must fall
+    inside an availability of the doctor, start on the slot grid anchored by
+    that availability's `starts_at`, and be as long as its `slot`. The slot must
+    also be free, meaning no other appointment of the same doctor covers it in a
+    status other than `canceled`.
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/PatientId'
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/AppointmentCreate.yaml'
+  responses:
+    '201':
+      description: The appointment was booked.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/AppointmentResponse.yaml'
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'
+    '422':
+      $ref: '../../components/responses/AppointmentValidationFailed.yaml'

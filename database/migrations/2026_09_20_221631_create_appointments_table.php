@@ -23,6 +23,7 @@ return new class extends Migration
 
             $table->index(['patient_id', 'doctor_id', 'status']);
             $table->index(['patient_id', 'doctor_id', 'starts_at', 'ends_at']);
+            $table->index(['doctor_id', 'starts_at', 'ends_at']);
             $table->timestamps();
         });
     }

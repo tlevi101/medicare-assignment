@@ -1,0 +1,36 @@
+title: AppointmentCreate
+type: object
+description: |
+  Request body accepted by appointments#store. All fields are required.
+  Beyond the per-field rules, the period has to be exactly one bookable slot of
+  one of the doctor's availabilities, and that slot must not be taken by another
+  appointment of the same doctor.
+required:
+  - doctor_id
+  - starts_at
+  - ends_at
+properties:
+  doctor_id:
+    type: integer
+    format: int64
+    minimum: 1
+    description: ID of the doctor the appointment is booked with. Must exist.
+    examples:
+      - 1
+  starts_at:
+    type: string
+    format: date-time
+    description: |
+      The start of the requested slot in ISO 8601 format. Must be in the future.
+      Seconds are truncated from the date
+    examples:
+      - 2026-06-01T09:00:00Z
+  ends_at:
+    type: string
+    format: date-time
+    description: |
+      The end of the requested slot in ISO 8601 format. Must be after
+      `starts_at`, and the period has to be exactly as long as the
+      availability's slot. Truncated to whole minutes like `starts_at`.
+    examples:
+      - 2026-06-01T09:30:00Z

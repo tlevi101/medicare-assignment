@@ -1,0 +1,70 @@
+description: The submitted body failed validation.
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/ValidationError.yaml'
+    examples:
+      missingFields:
+        summary: Required fields were omitted
+        value:
+          message: The doctor id field is required. (and 2 more errors)
+          errors:
+            doctor_id:
+              - The doctor id field is required.
+            starts_at:
+              - The starts at field is required.
+            ends_at:
+              - The ends at field is required.
+      unknownDoctor:
+        summary: No doctor matches doctor_id
+        value:
+          message: The selected doctor id is invalid.
+          errors:
+            doctor_id:
+              - The selected doctor id is invalid.
+      startsInThePast:
+        summary: The appointment does not start in the future
+        value:
+          message: The starts at field must be a date after now.
+          errors:
+            starts_at:
+              - The starts at field must be a date after now.
+      outsideAvailability:
+        summary: No availability of the doctor contains the requested period
+        value:
+          message: The requested period does not fall within any availability of the doctor. (and 1 more error)
+          errors:
+            starts_at:
+              - The requested period does not fall within any availability of the doctor.
+            ends_at:
+              - The requested period does not fall within any availability of the doctor.
+      notABookableSlot:
+        summary: |
+          The period is inside an availability but is not one of its slots, either
+          because it does not start on the slot grid or because its length differs
+          from the availability's slot.
+        value:
+          message: The requested period is not a bookable slot of the availability. (and 1 more error)
+          errors:
+            starts_at:
+              - The requested period is not a bookable slot of the availability.
+            ends_at:
+              - The requested period is not a bookable slot of the availability.
+      slotTaken:
+        summary: Another active appointment of the same doctor already covers the slot
+        value:
+          message: Slot is not free (and 1 more error)
+          errors:
+            starts_at:
+              - Slot is not free
+            ends_at:
+              - Slot is not free
+      patientAlreadyBooked:
+        summary: The patient already has an appointment in the requested period, with any doctor
+        value:
+          message: The patient already has an appointment in this period. (and 1 more error)
+          errors:
+            starts_at:
+              - The patient already has an appointment in this period.
+            ends_at:
+              - The patient already has an appointment in this period.

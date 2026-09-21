@@ -1,0 +1,20 @@
+description: A query parameter failed validation.
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/ValidationError.yaml'
+    examples:
+      unknownStatus:
+        summary: filter[status] is not one of the appointment statuses
+        value:
+          message: The selected filter.status is invalid.
+          errors:
+            filter.status:
+              - The selected filter.status is invalid.
+      filterNotAnArray:
+        summary: filter was sent as a scalar instead of filter[...]
+        value:
+          message: The filter field must be an array.
+          errors:
+            filter:
+              - The filter field must be an array.

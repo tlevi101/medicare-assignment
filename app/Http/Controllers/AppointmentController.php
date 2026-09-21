@@ -2,19 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\AppointmentStatus;
+use App\Http\Requests\IndexAppointmentRequest;
 use App\Http\Requests\StoreAppointmentRequest;
 use App\Models\Appointment;
 use App\Models\Patient;
-use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, Patient $patient)
+    public function index(IndexAppointmentRequest $request, Patient $patient)
     {
         return $patient->appointments()
+            ->when(
+                $request->status(),
+                fn ($query, AppointmentStatus $status) => $query->status($status)
+            )
             ->paginate(perPage: $request->perPage ?? 25)
             ->toResourceCollection();
     }
@@ -24,7 +29,10 @@ class AppointmentController extends Controller
      */
     public function store(Patient $patient, StoreAppointmentRequest $request)
     {
-        $appointment = $patient->appointments()->create($request->validated());
+        $appointment = $patient->appointments()->create([
+            ...$request->validated(),
+            'status' => AppointmentStatus::Pending,
+        ]);
 
         return $appointment->toResource();
     }

@@ -1,0 +1,69 @@
+title: Appointment
+type: object
+description: |
+  An appointment of a patient with a doctor, returned in a JSON:API format.
+  relationships is only present when the related resource is requested with
+  the include query parameter
+required:
+  - id
+  - type
+  - attributes
+properties:
+  id:
+    type: string
+    description: The appointment's ID
+    examples:
+      - '1'
+  type:
+    type: string
+    enum:
+      - appointments
+  attributes:
+    type: object
+    required:
+      - starts_at
+      - ends_at
+      - status
+      - cancel_reason
+    properties:
+      starts_at:
+        type: string
+        format: date-time
+        description: The start of the booked slot in ISO 8601 format
+        examples:
+          - 2026-06-01T09:00:00.000000Z
+      ends_at:
+        type: string
+        format: date-time
+        description: The end of the booked slot in ISO 8601 format
+        examples:
+          - 2026-06-01T09:30:00.000000Z
+      status:
+        $ref: './AppointmentStatus.yaml'
+      cancel_reason:
+        type:
+          - string
+          - 'null'
+        description: |
+          Only set when the appointment was cancelled; null in every other
+          status.
+        examples:
+          - The patient asked for a later date.
+  relationships:
+    type: object
+    description: Only present when requested through the `include` query parameter.
+    properties:
+      patient:
+        type: object
+        required:
+          - data
+        properties:
+          data:
+            $ref: './ResourceIdentifier.yaml'
+      doctor:
+        type: object
+        required:
+          - data
+        properties:
+          data:
+            $ref: './ResourceIdentifier.yaml'

@@ -1,0 +1,12 @@
+title: AppointmentStatus
+type: string
+description: |
+  The lifecycle status of an appointment. A newly created appointment is always
+  `pending`; `completed` and `canceled` are final states.
+enum:
+  - pending
+  - confirmed
+  - completed
+  - canceled
+examples:
+  - pending
