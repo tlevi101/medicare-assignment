@@ -15,7 +15,9 @@ info:
 
 servers:
   - url: http://localhost/api
-    description: Local development
+    description: Docker (Sail)
+  - url: http://localhost:8000/api
+    description: Native PHP (php artisan serve)
 
 tags:
   - name: Patients

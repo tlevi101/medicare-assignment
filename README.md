@@ -1,58 +1,120 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Medicare próba feladat megoldás
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Stack:
+- PHP 8.5^
+- Laravel 13^
+- MariaDB (Docker) / SQLite (natív telepítésnél)
+- OpenAPI
+- Pest
 
-## About Laravel
+## Telepítés
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Követelmények
+- PHP 8.3+ és Composer (a Sail image 8.5-öt használ)
+- Node 20+ (csak az OpenAPI bundleléshez és a Vite buildhez)
+- Docker **vagy** a `pdo_sqlite` PHP kiterjesztés, attól függ melyik utat választod
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+A `.env.example` a Docker / MariaDB beállításokkal jön, mert alapvetően én is úgy fejlesztettem.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### Docker / Sail (MariaDB)
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+```bash
+cp .env.example .env
+```
 
-## Contributing
+```bash
+./vendor/bin/sail up -d
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+./vendor/bin/sail artisan key:generate
+```
 
-## Code of Conduct
+```bash
+./vendor/bin/sail artisan migrate --seed
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Az OpenAPI bundleléshez kell még:
 
-## Security Vulnerabilities
+```bash
+./vendor/bin/sail npm install
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Natív PHP (SQLite)
 
-## License
+Itt a Docker megoldással ellentétben SQLite adatbázist használok, leginkább azért, mert nem akarom
+hogy adatbázis szervert kelljen telepíteni hozzá.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+composer install
+```
+
+A [scripts/use-sqlite.php](scripts/use-sqlite.php) írja meg a natív `.env`-et: a `.env.example`-ből
+indul ki, a `DB_*` beállításokat SQLite-ra cseréli, az `APP_URL`-t a `php artisan serve` portjára
+állítja, és létrehozza a `database/database.sqlite` fájlt.
+
+```bash
+composer sqlite
+```
+
+Közvetlenül is futtatható, ha nem akarsz a composeren át menni:
+
+```bash
+php scripts/use-sqlite.php
+```
+
+```bash
+php artisan key:generate
+```
+
+```bash
+php artisan migrate --seed
+```
+
+```bash
+php artisan serve
+```
+
+Amire figyelni kell:
+- kell hozzá a `pdo_sqlite` kiterjesztés, enélkül a script hibaüzenettel kilép
+
+## API
+Az API Docker alatt a http://localhost/api, natívan a http://localhost:8000/api címen érhető el
+
+Feladat megoldáshoz csináltam openapi specifikációt. Illetve ennek egy részét írtam kézzel, de a nagy részét AI csinálta. 
+**Csak az openapin dolgozott az AI!** Így az API.t több féle képpen is el lehet érni.
+
+A [laravelnek az új JSON:API](https://laravel.com/framework/docs/13.x/eloquent-resources#jsonapi-resources) formátumát használom.
+
+### IDE-be épített OpenaAPI kliens 
+Ha van IDE-ben kliens akkor az [./openapi/openapi.yaml](./openapi/openapi.yaml) -t elég megnyitni és elvileg kezelni tudja.
+De előforudlhat hogy bundle nélkül nem kezeli jól, ebben az esetben ezt a parancsot kell lefuttatni: 
+```bash
+npm run api:bundle
+```
+Majd a [public/docs/openapi.yaml](public/docs/openapi.yaml)-t kell megnyitni
+
+### Postman
+A teljes [public/docs/openapi.yaml](public/docs/openapi.yaml)-t be lehet importálni postmanbe.
+
+Ha esetleg ez nem sikerülne vagy ez egyszerűbb, be tettem külön az exportált [postman collection](./Medicare%20API.postman_collection.json)
+
+## Tesztelés
+Alapvetőne a tesztesetekből teszteltem, nem a Postmanből, emiatt elég sok teszt eset született.
+
+A tesztek memóriában futó SQLite-on mennek (`phpunit.xml`), tehát se MariaDB, se a
+`database/database.sqlite` nem kell hozzájuk, és mindkét telepítési úton ugyanazt futtatják:
+
+```bash
+php artisan test
+```
+
+Vagy Sail alatt:
+
+```bash
+./vendor/bin/sail artisan test
+```
