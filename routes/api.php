@@ -25,3 +25,8 @@ Route::resource(
     \App\Http\Controllers\AppointmentController::class,
     ['only' => ['index', 'store', 'show']]
 )->scoped();
+
+Route::get(
+    'doctors/{doctor}/free-slots',
+    [\App\Http\Controllers\AvailabilityController::class, 'freeSlots']
+)->name('doctors.free-slots');

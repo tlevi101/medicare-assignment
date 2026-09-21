@@ -74,6 +74,32 @@ Include:
     nested:
       value: doctor,doctor.nestedRelation
 
+From:
+  name: from
+  in: query
+  required: false
+  description: |
+    Start of the queried period. Defaults to the current time
+  schema:
+    type: string
+    format: date-time
+  examples:
+    tomorrow:
+      value: 2026-06-01T09:00:00Z
+
+To:
+  name: to
+  in: query
+  required: false
+  description: |
+    End of the queried period. Must be after `from`, and at most 14 days later
+  schema:
+    type: string
+    format: date-time
+  examples:
+    aWeekLater:
+      value: 2026-06-08T09:00:00Z
+
 StatusFilter:
   name: filter[status]
   in: query

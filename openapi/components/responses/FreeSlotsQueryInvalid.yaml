@@ -1,0 +1,27 @@
+description: A query parameter failed validation.
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/ValidationError.yaml'
+    examples:
+      periodTooLong:
+        summary: The period between from and to exceeds the maximum
+        value:
+          message: The queried period must not be longer than 14 days.
+          errors:
+            to:
+              - The queried period must not be longer than 14 days.
+      toBeforeFrom:
+        summary: to is not after from
+        value:
+          message: The to field must be a date after from.
+          errors:
+            to:
+              - The to field must be a date after from.
+      invalidPerPage:
+        summary: perPage is not an integer
+        value:
+          message: The per page field must be an integer.
+          errors:
+            perPage:
+              - The per page field must be an integer.

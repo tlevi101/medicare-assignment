@@ -1,0 +1,25 @@
+get:
+  tags:
+    - Free slots
+  summary: List a doctor's free slots
+  operationId: listFreeSlots
+  description: |
+    Returns the doctor's bookable slots that no active appointment covers, in a
+    paginated response.
+  parameters:
+    - $ref: '../../components/parameters/index.yaml#/DoctorId'
+    - $ref: '../../components/parameters/index.yaml#/From'
+    - $ref: '../../components/parameters/index.yaml#/To'
+    - $ref: '../../components/parameters/index.yaml#/Page'
+    - $ref: '../../components/parameters/index.yaml#/PerPage'
+  responses:
+    '200':
+      description: A page of free slots.
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/SlotCollectionResource.yaml'
+    '404':
+      $ref: '../../components/responses/NotFound.yaml'
+    '422':
+      $ref: '../../components/responses/FreeSlotsQueryInvalid.yaml'

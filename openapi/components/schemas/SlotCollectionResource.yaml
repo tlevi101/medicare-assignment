@@ -1,0 +1,17 @@
+title: SlotCollectionResource
+type: object
+description: |
+  A paginated collection of free slots, returned in a JSON:API format.
+required:
+  - data
+  - links
+  - meta
+properties:
+  data:
+    type: array
+    items:
+      $ref: './Slot.yaml'
+  links:
+    $ref: './PaginationLinks.yaml'
+  meta:
+    $ref: './PaginationMeta.yaml'

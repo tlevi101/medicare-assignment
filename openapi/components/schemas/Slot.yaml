@@ -1,0 +1,40 @@
+title: Slot
+type: object
+description: |
+  One bookable slot of a doctor, returned in a JSON:API format.
+required:
+  - id
+  - type
+  - attributes
+properties:
+  id:
+    type: string
+    description: '`{doctor_id}:{starts_at}`'
+    examples:
+      - '1:2026-06-01T09:00:00+00:00'
+  type:
+    type: string
+    enum:
+      - slots
+  attributes:
+    type: object
+    required:
+      - doctor_id
+      - starts_at
+      - ends_at
+    properties:
+      doctor_id:
+        type: integer
+        format: int64
+        examples:
+          - 1
+      starts_at:
+        type: string
+        format: date-time
+        examples:
+          - 2026-06-01T09:00:00.000000Z
+      ends_at:
+        type: string
+        format: date-time
+        examples:
+          - 2026-06-01T09:30:00.000000Z

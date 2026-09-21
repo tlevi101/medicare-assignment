@@ -26,6 +26,8 @@ tags:
     description: Doctor availabilities.
   - name: Appointments
     description: Patient appointments.
+  - name: Free slots
+    description: The bookable slots a doctor still has open.
 
 security: []
 
@@ -46,5 +48,7 @@ paths:
     $ref: './paths/appointments/index.yaml'
   /patient/{patient}/appointments/{appointment}:
     $ref: './paths/appointments/appointment.yaml'
+  /doctors/{doctor}/free-slots:
+    $ref: './paths/free-slots/index.yaml'
 
 
