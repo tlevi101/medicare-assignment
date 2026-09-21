@@ -12,6 +12,7 @@ use App\Http\Requests\StoreAppointmentRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 use App\Models\Patient;
+use App\Services\ReserveAppointmentService;
 
 class AppointmentController extends Controller
 {
@@ -32,14 +33,12 @@ class AppointmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Patient $patient, StoreAppointmentRequest $request)
-    {
-        $appointment = $patient->appointments()->create([
-            ...$request->validated(),
-            'status' => AppointmentStatus::Pending,
-        ]);
-
-        return $appointment->toResource();
+    public function store(
+        Patient                   $patient,
+        StoreAppointmentRequest   $request,
+        ReserveAppointmentService $booker,
+    ) {
+        return $booker->reserve($patient, $request->validated())->toResource();
     }
 
     /**

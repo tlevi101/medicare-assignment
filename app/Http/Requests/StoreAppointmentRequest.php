@@ -3,8 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Rules\AppointmentWithinAvailability;
-use App\Rules\PatientHasNoConflictingAppointment;
-use App\Rules\SlotIsFree;
 use Illuminate\Contracts\Validation\ValidationRule;
 use App\Http\Requests\Concerns\TruncatesDateTimeToMinutes;
 use Illuminate\Foundation\Http\FormRequest;
@@ -48,8 +46,6 @@ class StoreAppointmentRequest extends FormRequest
     {
         return [
             new AppointmentWithinAvailability(),
-            new SlotIsFree(),
-            new PatientHasNoConflictingAppointment($this->route('patient')),
         ];
     }
 }
